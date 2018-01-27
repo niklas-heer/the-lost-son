@@ -10,6 +10,12 @@ import MenuState from './states/Menu'
 
 import config from './config'
 
+import Inventory from './models/inventory/inventory'
+
+window.TheLostSon = window.TheLostSon || {}
+window.TheLostSon.playerInventory = window.TheLostSon.playerInventory || new Inventory()
+window.TheLostSon.levels = window.TheLostSon.levels || {}
+
 class Game extends Phaser.Game {
   constructor () {
     const docElement = document.documentElement
