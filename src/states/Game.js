@@ -139,6 +139,7 @@ export default class extends Phaser.State {
     }
     this.player = this.game.add.sprite(posx, posy, 'player');
     this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+    this.player.anchor.setTo(0.5, 0.5)
 
 
     this.player.has_power = false;
