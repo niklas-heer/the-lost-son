@@ -107,9 +107,11 @@ export default class extends Phaser.State {
     this.game.physics.enable(this.portal_w, Phaser.Physics.ARCADE);
 
     var result = this.findObjectsByType('player', this.map, 'Objects');
+    var rotation;
     if ((result.length != 0) && this.first) {
       posx = result[0].x
       posy = result[0].y
+      rotation = 0;
     } else {
       var addx = 0;
       var addy = 0;
@@ -120,19 +122,24 @@ export default class extends Phaser.State {
         portalpos = this.portal_s.position
         addx = 0;
         addy = -diff;
+        rotation = 270;
       } else if (this.direction == 1) {
         portalpos = this.portal_w.position
         addx = diff;
         addy = 0;
+        rotation = 0;
       } else if (this.direction == 2) {
         portalpos = this.portal_n.position
         addx = 0;
         addy = diff;
+        rotation = 90;
       } else {
         portalpos = this.portal_e.position
         addx = -diff;
         addy = 0;
+        rotation = 180;
       }
+
 
       posx = portalpos.x + addx
       posy = portalpos.y + addy
@@ -156,6 +163,7 @@ export default class extends Phaser.State {
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
 
+    this.player.angle = rotation;
     // this.groundLayer.resizeWorld();
   }
 
