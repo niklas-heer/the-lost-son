@@ -164,20 +164,43 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.chest, this.openChest, null, this);
 
 
-    this.player.body.velocity.y = 0;
-    this.player.body.velocity.x = 0;
+    this.player.body.maxVelocity.setTo(this.velo, this.velo);
 
     if(this.cursors.up.isDown) {
-      this.player.body.velocity.y -= this.velo;
+      this.player.body.acceleration.y -= this.velo;
     }
     else if(this.cursors.down.isDown) {
-      this.player.body.velocity.y += this.velo;
+      this.player.body.acceleration.y += this.velo;
+    }
+    else {
+      if (this.player.body.velocity.y > (this.velo / 10)) {
+        this.player.body.acceleration.y = -(this.velo * 10);
+      }
+      else if (this.player.body.velocity.y < -(this.velo / 10)) {
+        this.player.body.acceleration.y = (this.velo * 10);
+      }
+      else {
+        this.player.body.acceleration.y = 0;
+        this.player.body.velocity.y = 0;
+      }
     }
     if(this.cursors.left.isDown) {
-      this.player.body.velocity.x -= this.velo;
+      this.player.body.acceleration.x -= this.velo;
     }
     else if(this.cursors.right.isDown) {
-      this.player.body.velocity.x += this.velo;
+      this.player.body.acceleration.x += this.velo;
+    }
+    else {
+      if (this.player.body.velocity.x > (this.velo / 10)) {
+        this.player.body.acceleration.x = -(this.velo * 10);
+      }
+      else if (this.player.body.velocity.x < -(this.velo / 10)) {
+        this.player.body.acceleration.x = (this.velo * 10);
+      }
+      else {
+        this.player.body.acceleration.x = 0;
+        this.player.body.velocity.x = 0;
+      }
     }
   }
 
