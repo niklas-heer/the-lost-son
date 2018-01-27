@@ -19,12 +19,18 @@ export default class extends Phaser.State {
   }
 
 
-  init (levels, index) {
+  init (levels, index, direction) {
 
     this.velo = 400;
+    this.direction = direction
 
     if (this.loaded != true) {
-      this.st = { has_key: true };
+      this.first = true;
+      this.st = {
+        has_key: true
+      };
+    } else {
+      this.first = false;
     }
 
     this.loaded = true;
@@ -82,37 +88,59 @@ export default class extends Phaser.State {
     }
 
     var results = this.findObjectsByType('portalN', this.map, 'Objects');
-    this.portals_n = [];
-    for(var i in results) {
-      var portal = this.game.add.sprite(results[i].x, results[i].y, 'portal');
-      this.portals_n.push(portal);
-      this.game.physics.enable(portal, Phaser.Physics.ARCADE);
-    }
+    this.portal_n = this.game.add.sprite(results[0].x, results[0].y, 'portal');
+    this.game.physics.enable(this.portal_n, Phaser.Physics.ARCADE);
+
     var results = this.findObjectsByType('portalE', this.map, 'Objects');
-    this.portals_e = [];
-    for(var i in results) {
-      var portal = this.game.add.sprite(results[i].x, results[i].y, 'portal');
-      this.portals_e.push(portal);
-      this.game.physics.enable(portal, Phaser.Physics.ARCADE);
-    }
+    this.portal_e = this.game.add.sprite(results[0].x, results[0].y, 'portal');
+    this.game.physics.enable(this.portal_e, Phaser.Physics.ARCADE);
+
     var results = this.findObjectsByType('portalS', this.map, 'Objects');
-    this.portals_s = [];
-    for(var i in results) {
-      var portal = this.game.add.sprite(results[i].x, results[i].y, 'portal');
-      this.portals_s.push(portal);
-      this.game.physics.enable(portal, Phaser.Physics.ARCADE);
-    }
+    this.portal_s = this.game.add.sprite(results[0].x, results[0].y, 'portal');
+    this.game.physics.enable(this.portal_s, Phaser.Physics.ARCADE);
+
     var results = this.findObjectsByType('portalW', this.map, 'Objects');
-    this.portals_w = [];
-    for(var i in results) {
-      var portal = this.game.add.sprite(results[i].x, results[i].y, 'portal');
-      this.portals_w.push(portal);
-      this.game.physics.enable(portal, Phaser.Physics.ARCADE);
-    }
+    this.portal_w = this.game.add.sprite(results[0].x, results[0].y, 'portal');
+    this.game.physics.enable(this.portal_w, Phaser.Physics.ARCADE);
 
     var result = this.findObjectsByType('player', this.map, 'Objects');
-    this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
+    console.log("setting pos")
+    console.log(result.length)
+    console.log(this.first)
+    if ((result.length != 0) && this.first) {
+      posx = result[0].x
+      posy = result[0].y
+    } else {
+      console.log("Restoring pos")
+      var addx = 0;
+      var addy = 0;
+      var diff = 50;
+      var portalpos;
+      var posx, posy;
+      if (this.direction == 0) {
+        portalpos = this.portal_s.position
+        addx = 0;
+        addy = -diff;
+      } else if (this.direction == 1) {
+        portalpos = this.portal_w.position
+        addx = diff;
+        addy = 0;
+      } else if (this.direction == 2) {
+        portalpos = this.portal_n.position
+        addx = 0;
+        addy = diff;
+      } else {
+        portalpos = this.portal_e.position
+        addx = -diff;
+        addy = 0;
+      }
+
+      posx = portalpos.x + addx
+      posy = portalpos.y + addy
+    }
+    this.player = this.game.add.sprite(posx, posy, 'player');
     this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+
 
     this.player.has_power = false;
     this.player.has_key = false;
@@ -132,10 +160,10 @@ export default class extends Phaser.State {
     // this.game.physics.arcade.collide(this.player, this.chest);
 
     this.game.physics.arcade.overlap(this.player, this.power, this.collectPower, null, this);
-    this.game.physics.arcade.overlap(this.player, this.portals_n, this.enterPortalN, null, this);
-    this.game.physics.arcade.overlap(this.player, this.portals_e, this.enterPortalE, null, this);
-    this.game.physics.arcade.overlap(this.player, this.portals_s, this.enterPortalS, null, this);
-    this.game.physics.arcade.overlap(this.player, this.portals_w, this.enterPortalW, null, this);
+    this.game.physics.arcade.overlap(this.player, this.portal_n, this.enterPortalN, null, this);
+    this.game.physics.arcade.overlap(this.player, this.portal_e, this.enterPortalE, null, this);
+    this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
+    this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
     this.game.physics.arcade.overlap(this.player, this.key, this.collectKey, null, this);
     this.game.physics.arcade.overlap(this.player, this.chest, this.openChest, null, this);
 
@@ -184,8 +212,8 @@ export default class extends Phaser.State {
       this.player.loadTexture('star_with_key', 0);
   }
 
-  toLevel(index) {
-    this.state.start('Game' + index, true, false, this.levels, index);
+  toLevel(index, direction) {
+    this.state.start('Game' + index, true, false, this.levels, index, direction);
   }
 
   enterPortal(player, portal, direction) {
@@ -200,7 +228,7 @@ export default class extends Phaser.State {
       newlvl = this.levels[this.level_index].exits['W'];
     }
     newlvl -= 1; // zero indexing
-    this.toLevel(newlvl)
+    this.toLevel(newlvl, direction)
   }
 
   enterPortalN(player, portal) { this.enterPortal(player, portal, 0) }
