@@ -71,7 +71,6 @@ window.TheLostSon.levels = window.TheLostSon.levels || [
   },
 ]
 
-console.log(window.TheLostSon)
 class Game extends Phaser.Game {
   constructor () {
     const docElement = document.documentElement
