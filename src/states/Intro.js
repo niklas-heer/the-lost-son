@@ -10,9 +10,9 @@ export default class extends Phaser.State {
         const text = 'In a world where teleportation\nis used to travel any distance.\n' +
         '\n' +
         'A father wants to take his son with him to\nthe "bring your son to office" day.\n' +
-        'As they both teleportet they got separated\nand his son was lost in the way\nto the desired destination.\n'
+        'As they both teleported they got separated\nand his son was lost in the way\nto the desired destination.\n'
         '\n' +
-        'Your mission is to find your\nson in differnt locations.';
+        'Your mission is to find your\nson and go to work.';
 
 
         this.game.stage.backgroundColor = 0x272822;
