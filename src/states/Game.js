@@ -200,7 +200,6 @@ export default class extends Phaser.State {
       newlvl = this.levels[this.level_index].exits['W'];
     }
     newlvl -= 1; // zero indexing
-    this.key.destroy()
     this.toLevel(newlvl)
   }
 
