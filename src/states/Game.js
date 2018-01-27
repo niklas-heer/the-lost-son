@@ -40,7 +40,6 @@ export default class extends Phaser.State {
   }
 
   preload () {
-    this.game.load.spritesheet('player', 'assets/images/star.png', 32, 32);
     this.game.load.spritesheet('portal', 'assets/images/portal.png', 32, 32);
     this.game.load.spritesheet('power', 'assets/images/power.png', 32, 32);
     this.game.load.spritesheet('key', 'assets/images/key.png', 32, 32);
@@ -48,6 +47,7 @@ export default class extends Phaser.State {
     this.game.load.spritesheet('chest_open', 'assets/images/chest_open.png', 32, 32);
     this.game.load.spritesheet('star_with_power', 'assets/images/star_with_power.png', 32, 32);
     this.game.load.spritesheet('star_with_key', 'assets/images/star_with_key.png', 32, 32);
+    this.game.load.spritesheet('player', './assets/images/player.png', 32, 32);
     this.game.load.tilemap('map', this.levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', 'assets/tilemaps/tiles/gridtiles.png');
 
@@ -166,7 +166,6 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.key, this.collectKey, null, this);
     this.game.physics.arcade.overlap(this.player, this.chest, this.openChest, null, this);
 
-
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
 
     if(this.cursors.up.isDown) {
@@ -205,6 +204,8 @@ export default class extends Phaser.State {
         this.player.body.velocity.x = 0;
       }
     }
+
+    this.rotatePlayer(this.player.body.velocity.x, this.player.body.velocity.y, this.player.body.acceleration.x, this.player.body.acceleration.y)
   }
 
   shutdown() {
@@ -253,9 +254,18 @@ export default class extends Phaser.State {
     this.toLevel(newlvl, direction)
   }
 
+  rotatePlayer(x, y, accX, accY) {
+    var rad = Math.atan2(y, x);
+    var deg = rad * (180 / Math.PI);
+    console.log(deg);
+    if (accX !== 0 || accY !== 0) {
+      console.log("x: " + x + ", y: " + y);
+      this.player.angle = deg;
+    }
+  }
+
   enterPortalN(player, portal) { this.enterPortal(player, portal, 0) }
   enterPortalE(player, portal) { this.enterPortal(player, portal, 1) }
   enterPortalS(player, portal) { this.enterPortal(player, portal, 2) }
   enterPortalW(player, portal) { this.enterPortal(player, portal, 3) }
 }
-
