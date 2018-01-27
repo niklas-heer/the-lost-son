@@ -42,7 +42,7 @@ export default class Menu extends Phaser.State {
 
     this.start.onInputUp.add(() => {
       this.music.stop()
-      this.state.start('Game')
+      this.state.start('Game0', true, false, this.levels, 0)
     })
 
     this.menuPanel = this.add.group()

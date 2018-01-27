@@ -17,14 +17,74 @@ class Game extends Phaser.Game {
 
     super(width, height, Phaser.CANVAS, 'content', null)
 
+    const levels = [
+        {
+            tilemap: 'assets/tilemaps/maps/world01.json',
+            exits: {
+                'N': 2,
+                'E': 3,
+                'S': 5,
+                'W': 4,
+            },
+        },
+        {
+            tilemap: 'assets/tilemaps/maps/world02.json',
+            exits:{
+                'N': 6,
+                'E': 3,
+                'S': 1,
+                'W': 4,
+            },
+        },
+        {
+            tilemap: 'assets/tilemaps/maps/world03.json',
+            exits:{
+                'N': 5,
+                'E': 1,
+                'S': 2,
+                'W': 6,
+            },
+        },
+        {
+            tilemap: 'assets/tilemaps/maps/world04.json',
+            exits:{
+                'N': 5,
+                'E': 6,
+                'S': 2,
+                'W': 1,
+            },
+        },
+        {
+            tilemap: 'assets/tilemaps/maps/world05.json',
+            exits:{
+                'N': 1,
+                'E': 3,
+                'S': 6,
+                'W': 4,
+            },
+        },
+        {
+            tilemap: 'assets/tilemaps/maps/world06.json',
+            exits:{
+                'N': 5,
+                'E': 3,
+                'S': 2,
+                'W': 4,
+            },
+        },
+
+    ]
+
     this.state.add('Boot', BootState, false)
     this.state.add('Splash', SplashState, false)
-    this.state.add('Game', GameState, false)
     this.state.add('Menu', MenuState, false)
+    for (var i = 0; i < levels.length; i++) {
+      var state = this.state.add('Game' + i, GameState, false);
+    }
 
     // with Cordova with need to wait that the device is ready so we will call the Boot state in another file
     if (!window.cordova) {
-      this.state.start('Boot')
+      this.state.start('Boot', true, false, levels)
     }
   }
 }
