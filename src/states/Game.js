@@ -21,7 +21,7 @@ export default class extends Phaser.State {
 
   init (levels, index, direction) {
 
-    this.velo = 400;
+    this.velo = 250;
     this.direction = direction
 
     if (this.loaded != true) {
@@ -40,16 +40,16 @@ export default class extends Phaser.State {
   }
 
   preload () {
-    this.game.load.spritesheet('player', 'assets/images/star.png', 32, 32);
-    this.game.load.spritesheet('portal', 'assets/images/portal.png', 32, 32);
-    this.game.load.spritesheet('power', 'assets/images/power.png', 32, 32);
-    this.game.load.spritesheet('key', 'assets/images/key.png', 32, 32);
-    this.game.load.spritesheet('chest_closed', 'assets/images/chest_closed.png', 32, 32);
-    this.game.load.spritesheet('chest_open', 'assets/images/chest_open.png', 32, 32);
-    this.game.load.spritesheet('star_with_power', 'assets/images/star_with_power.png', 32, 32);
-    this.game.load.spritesheet('star_with_key', 'assets/images/star_with_key.png', 32, 32);
+    this.game.load.spritesheet('player', './assets/images/player.png', 32, 32);
+    this.game.load.spritesheet('portal', './assets/images/portal.png', 32, 32);
+    this.game.load.spritesheet('power', './assets/images/power.png', 32, 32);
+    this.game.load.spritesheet('key', './assets/images/key.png', 32, 32);
+    this.game.load.spritesheet('chest_closed', './assets/images/chest_closed.png', 32, 32);
+    this.game.load.spritesheet('chest_open', './assets/images/chest_open.png', 32, 32);
+    this.game.load.spritesheet('star_with_power', './assets/images/star_with_power.png', 32, 32);
+    this.game.load.spritesheet('star_with_key', './assets/images/star_with_key.png', 32, 32);
     this.game.load.tilemap('map', this.levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles', 'assets/tilemaps/tiles/gridtiles.png');
+    this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
 
   }
 
@@ -166,7 +166,6 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.key, this.collectKey, null, this);
     this.game.physics.arcade.overlap(this.player, this.chest, this.openChest, null, this);
 
-
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
 
     if(this.cursors.up.isDown) {
@@ -205,33 +204,35 @@ export default class extends Phaser.State {
         this.player.body.velocity.x = 0;
       }
     }
+
+    this.rotatePlayer(this.player.body.velocity.x, this.player.body.velocity.y, this.player.body.acceleration.x, this.player.body.acceleration.y)
   }
 
   shutdown() {
   }
 
   collectPower(player, power) {
-      power.destroy();
+    power.destroy();
 
-      this.player.has_power = true;
-      this.player.loadTexture('star_with_power', 0);
-      this.velo = 200;
+    this.player.has_power = true;
+    this.player.loadTexture('star_with_power', 0);
+    this.velo = 200;
   }
 
   openChest(player, chest) {
-      if(player.has_key) {
-          this.chest.loadTexture('chest_open', 0);
-          player.has_key = false;
-          player.loadTexture('player', 0);
-      }
+    if(player.has_key) {
+      this.chest.loadTexture('chest_open', 0);
+      player.has_key = false;
+      player.loadTexture('player', 0);
+    }
   }
 
   collectKey(player, key) {
-      key.destroy();
-      this.st.has_key = false;
+    key.destroy();
+    this.st.has_key = false;
 
-      this.player.has_key = true;
-      this.player.loadTexture('star_with_key', 0);
+    this.player.has_key = true;
+    this.player.loadTexture('star_with_key', 0);
   }
 
   toLevel(index, direction) {
@@ -253,9 +254,16 @@ export default class extends Phaser.State {
     this.toLevel(newlvl, direction)
   }
 
+  rotatePlayer(x, y, accX, accY) {
+    var rad = Math.atan2(y, x);
+    var deg = rad * (180 / Math.PI);
+    if (accX !== 0 || accY !== 0) {
+      this.player.angle = deg;
+    }
+  }
+
   enterPortalN(player, portal) { this.enterPortal(player, portal, 0) }
   enterPortalE(player, portal) { this.enterPortal(player, portal, 1) }
   enterPortalS(player, portal) { this.enterPortal(player, portal, 2) }
   enterPortalW(player, portal) { this.enterPortal(player, portal, 3) }
 }
-
