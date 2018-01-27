@@ -185,11 +185,13 @@ export default class extends Phaser.State {
 
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
 
-    if(this.cursors.up.isDown) {
-      this.player.body.acceleration.y -= this.velo;
-    }
-    else if(this.cursors.down.isDown) {
-      this.player.body.acceleration.y += this.velo;
+    if(this.cursors.up.isDown || this.cursors.down.isDown) {
+        if(this.cursors.up.isDown) {
+            this.player.body.acceleration.y -= this.velo;
+        }
+        if(this.cursors.down.isDown) {
+            this.player.body.acceleration.y += this.velo;
+        }
     }
     else {
       if (this.player.body.velocity.y > (this.velo / 10)) {
@@ -203,11 +205,13 @@ export default class extends Phaser.State {
         this.player.body.velocity.y = 0;
       }
     }
-    if(this.cursors.left.isDown) {
-      this.player.body.acceleration.x -= this.velo;
-    }
-    else if(this.cursors.right.isDown) {
-      this.player.body.acceleration.x += this.velo;
+    if(this.cursors.left.isDown || this.cursors.right.isDown) {
+        if(this.cursors.left.isDown) {
+            this.player.body.acceleration.x -= this.velo;
+        }
+        if(this.cursors.right.isDown) {
+            this.player.body.acceleration.x += this.velo;
+        }
     }
     else {
       if (this.player.body.velocity.x > (this.velo / 10)) {
