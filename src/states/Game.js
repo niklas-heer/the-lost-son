@@ -44,12 +44,16 @@ export default class extends Phaser.State {
   preload () {
     this.game.load.spritesheet('player', './assets/images/player.png', 32, 32);
     this.game.load.spritesheet('portal', './assets/images/portal.png', 32, 32);
-    this.game.load.spritesheet('power', './assets/images/power.png', 32, 32);
-    this.game.load.spritesheet('key', './assets/images/key.png', 32, 32);
     this.game.load.spritesheet('chest_closed', './assets/images/chest_closed.png', 32, 32);
     this.game.load.spritesheet('chest_open', './assets/images/chest_open.png', 32, 32);
+
+    this.game.load.spritesheet('ice_cream', './assets/images/ice_cream.png', 32, 32);
+    this.game.load.spritesheet('key', './assets/images/key.png', 32, 32);
+    this.game.load.spritesheet('scissor', './assets/images/scissor.png', 32, 32);
+
     this.game.load.spritesheet('star_with_power', './assets/images/star_with_power.png', 32, 32);
     this.game.load.spritesheet('star_with_key', './assets/images/star_with_key.png', 32, 32);
+    
     this.game.load.tilemap('map', levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
   }
@@ -71,9 +75,9 @@ export default class extends Phaser.State {
 
     // this.groundLayer.visible = true;
 
-    var result = this.findObjectsByType('power', this.map, 'Objects');
-    this.power = this.game.add.sprite(result[0].x, result[0].y, 'power');
-    this.game.physics.enable(this.power, Phaser.Physics.ARCADE);
+    var result = this.findObjectsByType('ice_cream', this.map, 'Objects');
+    this.ice_cream = this.game.add.sprite(result[0].x, result[0].y, 'ice_cream');
+    this.game.physics.enable(this.ice_cream, Phaser.Physics.ARCADE);
 
     var result = this.findObjectsByType('chest', this.map, 'Objects');
     if (window.TheLostSon.playerInventory.keyUsed) {
@@ -159,7 +163,7 @@ export default class extends Phaser.State {
     this.player.anchor.setTo(0.5, 0.5)
 
 
-    this.player.has_power = false;
+    this.player.has_ice_cream = false;
     this.player.body.collideWorldBounds = true;
 
     this.game.camera.follow(this.player);
@@ -175,7 +179,7 @@ export default class extends Phaser.State {
     this.game.physics.arcade.collide(this.player, this.collisionLayer);
     // this.game.physics.arcade.collide(this.player, this.chest);
 
-    this.game.physics.arcade.overlap(this.player, this.power, this.collectPower, null, this);
+    this.game.physics.arcade.overlap(this.player, this.ice_cream, this.collectIceCream, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_n, this.enterPortalN, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_e, this.enterPortalE, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
@@ -232,10 +236,10 @@ export default class extends Phaser.State {
   shutdown() {
   }
 
-  collectPower(player, power) {
-    power.destroy();
+  collectIceCream(player, ice_cream) {
+    ice_cream.destroy();
 
-    this.player.has_power = true;
+    this.player.has_ice_cream = true;
     this.player.loadTexture('star_with_power', 0);
     this.velo = 200;
   }
