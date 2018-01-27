@@ -40,16 +40,16 @@ export default class extends Phaser.State {
   }
 
   preload () {
-    this.game.load.spritesheet('portal', 'assets/images/portal.png', 32, 32);
-    this.game.load.spritesheet('power', 'assets/images/power.png', 32, 32);
-    this.game.load.spritesheet('key', 'assets/images/key.png', 32, 32);
-    this.game.load.spritesheet('chest_closed', 'assets/images/chest_closed.png', 32, 32);
-    this.game.load.spritesheet('chest_open', 'assets/images/chest_open.png', 32, 32);
-    this.game.load.spritesheet('star_with_power', 'assets/images/star_with_power.png', 32, 32);
-    this.game.load.spritesheet('star_with_key', 'assets/images/star_with_key.png', 32, 32);
     this.game.load.spritesheet('player', './assets/images/player.png', 32, 32);
+    this.game.load.spritesheet('portal', './assets/images/portal.png', 32, 32);
+    this.game.load.spritesheet('power', './assets/images/power.png', 32, 32);
+    this.game.load.spritesheet('key', './assets/images/key.png', 32, 32);
+    this.game.load.spritesheet('chest_closed', './assets/images/chest_closed.png', 32, 32);
+    this.game.load.spritesheet('chest_open', './assets/images/chest_open.png', 32, 32);
+    this.game.load.spritesheet('star_with_power', './assets/images/star_with_power.png', 32, 32);
+    this.game.load.spritesheet('star_with_key', './assets/images/star_with_key.png', 32, 32);
     this.game.load.tilemap('map', this.levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.image('tiles', 'assets/tilemaps/tiles/gridtiles.png');
+    this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
 
   }
 
