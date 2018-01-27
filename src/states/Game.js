@@ -212,27 +212,27 @@ export default class extends Phaser.State {
   }
 
   collectPower(player, power) {
-      power.destroy();
+    power.destroy();
 
-      this.player.has_power = true;
-      this.player.loadTexture('star_with_power', 0);
-      this.velo = 200;
+    this.player.has_power = true;
+    this.player.loadTexture('star_with_power', 0);
+    this.velo = 200;
   }
 
   openChest(player, chest) {
-      if(player.has_key) {
-          this.chest.loadTexture('chest_open', 0);
-          player.has_key = false;
-          player.loadTexture('player', 0);
-      }
+    if(player.has_key) {
+      this.chest.loadTexture('chest_open', 0);
+      player.has_key = false;
+      player.loadTexture('player', 0);
+    }
   }
 
   collectKey(player, key) {
-      key.destroy();
-      this.st.has_key = false;
+    key.destroy();
+    this.st.has_key = false;
 
-      this.player.has_key = true;
-      this.player.loadTexture('star_with_key', 0);
+    this.player.has_key = true;
+    this.player.loadTexture('star_with_key', 0);
   }
 
   toLevel(index, direction) {
