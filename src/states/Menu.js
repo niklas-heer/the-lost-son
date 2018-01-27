@@ -3,6 +3,10 @@ import TextButton from '../extensions/textbutton';
 
 export default class Menu extends Phaser.State {
 
+  init (levels) {
+    this.levels = levels;
+  }
+
   create() {
     this.music = this.game.add.audio('menuMusic')
     this.title = new Phaser.Text(this.game,
