@@ -3,7 +3,7 @@ import Phaser from 'phaser'
 
 export default class extends Phaser.State {
 
-    //find objects in a Tiled layer that containt a property called "type" equal to a certain value
+  //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType (type, map, layer) {
     var result = new Array();
     map.objects[layer].forEach(function(element){
