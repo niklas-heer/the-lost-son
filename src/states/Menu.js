@@ -54,5 +54,13 @@ export default class Menu extends Phaser.State {
     this.menuPanel.add(this.start)
 
     this.music.loopFull()
+
+    this.spacebarKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+  }
+  update() {
+    if (this.spacebarKey.isDown)
+    {
+      this.state.start('Intro', true, false, this.levels)
+    }
   }
 }
