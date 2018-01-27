@@ -4,6 +4,7 @@ import Phaser from 'phaser'
 
 import BootState from './states/Boot'
 import SplashState from './states/Splash'
+import IntroState from './states/Intro'
 import GameState from './states/Game'
 import MenuState from './states/Menu'
 
@@ -76,6 +77,7 @@ class Game extends Phaser.Game {
     ]
 
     this.state.add('Boot', BootState, false)
+    this.state.add('Intro', IntroState, false)
     this.state.add('Splash', SplashState, false)
     this.state.add('Menu', MenuState, false)
     for (var i = 0; i < levels.length; i++) {
