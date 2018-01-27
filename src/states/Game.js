@@ -2,12 +2,11 @@
 import Phaser from 'phaser'
 import Inventory from '../models/inventory/inventory'
 import Item from '../models/inventory/item'
-
+import Chest from '../sprites/chest'
 
 var levels
 
 export default class extends Phaser.State {
-
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType (type, map, layer) {
     var result = new Array();
@@ -23,9 +22,7 @@ export default class extends Phaser.State {
     return result;
   }
 
-
   init (index, direction) {
-
     levels = window.TheLostSon.levels
     this.velo = 250;
     this.direction = direction
@@ -80,13 +77,7 @@ export default class extends Phaser.State {
     this.game.physics.enable(this.ice_cream, Phaser.Physics.ARCADE);
 
     var result = this.findObjectsByType('chest', this.map, 'Objects');
-    if (window.TheLostSon.playerInventory.keyUsed) {
-      this.chest = this.game.add.sprite(result[0].x, result[0].y, 'chest_open');
-    } else {
-      this.chest = this.game.add.sprite(result[0].x, result[0].y, 'chest_closed');
-    }
-    this.game.physics.enable(this.chest, Phaser.Physics.ARCADE);
-    this.chest.body.immovable = true;
+    this.chest = new Chest(this.game, result[0].x, result[0].y);
 
     let currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem();
     if (!window.TheLostSon.playerInventory.keyUsed &&
@@ -185,7 +176,7 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
     this.game.physics.arcade.overlap(this.player, this.key, this.collectKey, null, this);
-    this.game.physics.arcade.overlap(this.player, this.chest, this.openChest, null, this);
+    this.game.physics.arcade.overlap(this.player, this.chest, this.chest.openChest.bind(this.chest), null, this);
 
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
 
@@ -233,30 +224,12 @@ export default class extends Phaser.State {
     this.rotatePlayer(this.player.body.velocity.x, this.player.body.velocity.y, this.player.body.acceleration.x, this.player.body.acceleration.y)
   }
 
-  shutdown() {
-  }
-
   collectIceCream(player, ice_cream) {
     ice_cream.destroy();
 
     this.player.has_ice_cream = true;
     this.player.loadTexture('star_with_power', 0);
     this.velo = 200;
-  }
-
-  openChest(player, chest) {
-
-    let currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem()
-    if(!window.TheLostSon.playerInventory.keyUsed &&
-      currentInventoryItem != null &&
-      currentInventoryItem.isKey()) {
-      this.chest.loadTexture('chest_open', 0);
-
-      window.TheLostSon.playerInventory.useKeyOnChest();
-
-      window.TheLostSon.playerInventory.receiveHedgeTrimmer();
-      player.loadTexture('player', 0);
-    }
   }
 
   collectKey(player, key) {
