@@ -31,7 +31,7 @@ export default class extends Phaser.State {
     this.game.load.spritesheet('chest_open', 'assets/images/chest_open.png', 32, 32);
     this.game.load.spritesheet('star_with_power', 'assets/images/star_with_power.png', 32, 32);
     this.game.load.spritesheet('star_with_key', 'assets/images/star_with_key.png', 32, 32);
-    this.game.load.tilemap('map', 'assets/tilemaps/maps/world02.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.tilemap('map', 'assets/tilemaps/maps/world01.json', null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', 'assets/tilemaps/tiles/gridtiles.png');
 
   }
