@@ -257,9 +257,7 @@ export default class extends Phaser.State {
   rotatePlayer(x, y, accX, accY) {
     var rad = Math.atan2(y, x);
     var deg = rad * (180 / Math.PI);
-    console.log(deg);
     if (accX !== 0 || accY !== 0) {
-      console.log("x: " + x + ", y: " + y);
       this.player.angle = deg;
     }
   }
