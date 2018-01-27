@@ -3,6 +3,9 @@ import Phaser from 'phaser'
 import Inventory from '../models/inventory/inventory'
 import Item from '../models/inventory/item'
 
+
+var levels
+
 export default class extends Phaser.State {
 
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
@@ -21,8 +24,9 @@ export default class extends Phaser.State {
   }
 
 
-  init (levels, index, direction) {
+  init (index, direction) {
 
+    levels = window.TheLostSon.levels
     this.velo = 250;
     this.direction = direction
 
@@ -34,7 +38,6 @@ export default class extends Phaser.State {
 
     this.loaded = true;
 
-    this.levels = levels;
     this.level_index = index;
   }
 
@@ -47,7 +50,7 @@ export default class extends Phaser.State {
     this.game.load.spritesheet('chest_open', './assets/images/chest_open.png', 32, 32);
     this.game.load.spritesheet('star_with_power', './assets/images/star_with_power.png', 32, 32);
     this.game.load.spritesheet('star_with_key', './assets/images/star_with_key.png', 32, 32);
-    this.game.load.tilemap('map', this.levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.tilemap('map', levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
   }
 
@@ -260,19 +263,19 @@ export default class extends Phaser.State {
   }
 
   toLevel(index, direction) {
-  this.state.start('Game' + index, true, false, this.levels, index, direction);
+    this.state.start('Game' + index, true, false, index, direction);
   }
 
   enterPortal(player, portal, direction) {
     var newlvl;
     if (direction == 0) {
-      newlvl = this.levels[this.level_index].exits['N'];
+      newlvl = levels[this.level_index].exits['N'];
     } else if (direction == 1) {
-      newlvl = this.levels[this.level_index].exits['E'];
+      newlvl = levels[this.level_index].exits['E'];
     } else if (direction == 2) {
-      newlvl = this.levels[this.level_index].exits['S'];
+      newlvl = levels[this.level_index].exits['S'];
     } else {
-      newlvl = this.levels[this.level_index].exits['W'];
+      newlvl = levels[this.level_index].exits['W'];
     }
     newlvl -= 1; // zero indexing
     this.toLevel(newlvl, direction)

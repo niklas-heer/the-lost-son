@@ -2,8 +2,7 @@ import Phaser from 'phaser'
 import { centerGameObjects } from '../utils'
 
 export default class extends Phaser.State {
-  init (levels, index) {
-    this.levels = levels;
+  init () {
   }
 
   preload () {
@@ -15,6 +14,6 @@ export default class extends Phaser.State {
   }
 
   create () {
-    this.state.start('Menu', true, false, this.levels);
+    this.state.start('Menu');
   }
 }
