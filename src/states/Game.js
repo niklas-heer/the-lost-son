@@ -21,7 +21,7 @@ export default class extends Phaser.State {
 
   init (levels, index, direction) {
 
-    this.velo = 400;
+    this.velo = 250;
     this.direction = direction
 
     if (this.loaded != true) {
