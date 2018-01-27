@@ -31,9 +31,17 @@ export default class extends Phaser.State {
         this.introText.wordWrap = false
         this.introText.setTextBounds(25, 25, this.camera.width - 25, this.camera.height);
         this.introText.width = this.camera.width - 50
+
+        this.spacebarKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
     }
 
     update() {
+
+        if (this.spacebarKey.isDown)
+        {
+            this.state.start('Game0', true, false, this.levels, 0)
+        }
+
         if (this.introText && (this.introText.inCamera || this.introText.position.y > 0))
         {
             this.introText.position.y -= 2
