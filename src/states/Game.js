@@ -104,14 +104,10 @@ export default class extends Phaser.State {
     this.game.physics.enable(this.portal_w, Phaser.Physics.ARCADE);
 
     var result = this.findObjectsByType('player', this.map, 'Objects');
-    console.log("setting pos")
-    console.log(result.length)
-    console.log(this.first)
     if ((result.length != 0) && this.first) {
       posx = result[0].x
       posy = result[0].y
     } else {
-      console.log("Restoring pos")
       var addx = 0;
       var addy = 0;
       var diff = 50;
