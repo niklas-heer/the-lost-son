@@ -1,5 +1,7 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
+import Inventory from '../models/inventory/inventory'
+import Item from '../models/inventory/item'
 
 export default class extends Phaser.State {
 
@@ -26,9 +28,6 @@ export default class extends Phaser.State {
 
     if (this.loaded != true) {
       this.first = true;
-      this.st = {
-        has_key: true
-      };
     } else {
       this.first = false;
     }
@@ -50,11 +49,9 @@ export default class extends Phaser.State {
     this.game.load.spritesheet('star_with_key', './assets/images/star_with_key.png', 32, 32);
     this.game.load.tilemap('map', this.levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
-
   }
 
   create () {
-
     this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -65,13 +62,9 @@ export default class extends Phaser.State {
     this.collisionLayer = this.map.createLayer('Collision');
     // this.game.physics.enable(this.collisionLayer, Phaser.Physics.ARCADE);
 
-
-
-
     // this.map.setCollisionByExclusion([], true, this.groundLayer);
     this.map.setCollisionByExclusion([], true, this.collisionLayer);
     //this.map.setCollisionBetween(1, 100000, true, this.collisionLayer);
-
 
     // this.groundLayer.visible = true;
 
@@ -80,11 +73,18 @@ export default class extends Phaser.State {
     this.game.physics.enable(this.power, Phaser.Physics.ARCADE);
 
     var result = this.findObjectsByType('chest', this.map, 'Objects');
-    this.chest = this.game.add.sprite(result[0].x, result[0].y, 'chest_closed');
+    if (window.TheLostSon.playerInventory.keyUsed) {
+      this.chest = this.game.add.sprite(result[0].x, result[0].y, 'chest_open');
+    } else {
+      this.chest = this.game.add.sprite(result[0].x, result[0].y, 'chest_closed');
+    }
     this.game.physics.enable(this.chest, Phaser.Physics.ARCADE);
     this.chest.body.immovable = true;
 
-    if (this.st.has_key) {
+    let currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem();
+    if (!window.TheLostSon.playerInventory.keyUsed &&
+      (currentInventoryItem == null ||
+      !currentInventoryItem.isKey())) {
       var result = this.findObjectsByType('key', this.map, 'Objects');
       this.key = this.game.add.sprite(result[0].x, result[0].y, 'key');
       this.game.physics.enable(this.key, Phaser.Physics.ARCADE);
@@ -137,14 +137,19 @@ export default class extends Phaser.State {
       posx = portalpos.x + addx
       posy = portalpos.y + addy
     }
-    this.player = this.game.add.sprite(posx, posy, 'player');
+
+    currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem();
+    if (currentInventoryItem != null && currentInventoryItem.isKey()) {
+      this.player = this.game.add.sprite(posx, posy, 'star_with_key');
+    } else {
+      this.player = this.game.add.sprite(posx, posy, 'player');
+    }
+
     this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
     this.player.anchor.setTo(0.5, 0.5)
 
 
     this.player.has_power = false;
-    this.player.has_key = false;
-
     this.player.body.collideWorldBounds = true;
 
     this.game.camera.follow(this.player);
@@ -221,23 +226,33 @@ export default class extends Phaser.State {
   }
 
   openChest(player, chest) {
-    if(player.has_key) {
+
+    let currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem()
+    if(!window.TheLostSon.playerInventory.keyUsed &&
+      currentInventoryItem != null &&
+      currentInventoryItem.isKey()) {
       this.chest.loadTexture('chest_open', 0);
-      player.has_key = false;
+
+      window.TheLostSon.playerInventory.useKeyOnChest();
+
+      window.TheLostSon.playerInventory.receiveHedgeTrimmer();
       player.loadTexture('player', 0);
     }
   }
 
   collectKey(player, key) {
-    key.destroy();
-    this.st.has_key = false;
+    if (window.TheLostSon.playerInventory.carriesItem()) {
+      return;
+    }
 
-    this.player.has_key = true;
+    key.destroy();
+    window.TheLostSon.playerInventory.findKey();
+
     this.player.loadTexture('star_with_key', 0);
   }
 
   toLevel(index, direction) {
-    this.state.start('Game' + index, true, false, this.levels, index, direction);
+  this.state.start('Game' + index, true, false, this.levels, index, direction);
   }
 
   enterPortal(player, portal, direction) {
