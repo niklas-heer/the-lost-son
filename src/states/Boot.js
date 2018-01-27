@@ -2,11 +2,10 @@ import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 
 export default class extends Phaser.State {
-  init (levels) {
+  init () {
     this.stage.backgroundColor = '#EDEEC9'
     this.fontsReady = false
     this.fontsLoaded = this.fontsLoaded.bind(this)
-    this.levels = levels;
   }
 
   preload () {
@@ -36,7 +35,7 @@ export default class extends Phaser.State {
 
   render () {
     if (this.fontsReady) {
-      this.state.start('Splash', true, false, this.levels);
+      this.state.start('Splash');
     }
   }
 

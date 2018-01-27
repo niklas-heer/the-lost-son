@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
 
 export default class extends Phaser.State {
-    init (levels) {
-        this.levels = levels
+    init () {
         this.introCompleted = false
     }
 
@@ -39,7 +38,7 @@ export default class extends Phaser.State {
 
         if (this.spacebarKey.isDown)
         {
-            this.state.start('Game0', true, false, this.levels, 0)
+            this.state.start('Game0', true, false, 0)
         }
 
         if (this.introText && (this.introText.inCamera || this.introText.position.y > 0))
@@ -54,7 +53,7 @@ export default class extends Phaser.State {
 
         if (this.introCompleted)
         {
-            this.state.start('Game0', true, false, this.levels, 0)
+            this.state.start('Game0', true, false, 0)
         }
     }
 }

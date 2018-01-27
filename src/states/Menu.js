@@ -3,8 +3,7 @@ import TextButton from '../extensions/textbutton';
 
 export default class Menu extends Phaser.State {
 
-  init (levels) {
-    this.levels = levels;
+  init () {
   }
 
   create() {
@@ -46,7 +45,7 @@ export default class Menu extends Phaser.State {
 
     this.start.onInputUp.add(() => {
       this.music.stop()
-      this.state.start('Intro', true, false, this.levels)
+      this.state.start('Intro')
     })
 
     this.menuPanel = this.add.group()
@@ -60,7 +59,7 @@ export default class Menu extends Phaser.State {
   update() {
     if (this.spacebarKey.isDown)
     {
-      this.state.start('Intro', true, false, this.levels)
+      this.state.start('Intro')
     }
   }
 }
