@@ -19,7 +19,7 @@ export default class extends Phaser.State {
     let text = this.add.text(this.world.centerX, this.world.centerY, 'loading fonts', { font: '16px Arial', fill: '#dddddd', align: 'center' })
     text.anchor.setTo(0.5, 0.5)
 
-    this.load.atlasJSONArray('button', './assets/images/spritesheet/button.png', './assets/data/spritesheet/button.json')
+    this.load.atlasJSONArray('start_btn', './assets/images/spritesheet/start_btn.png', './assets/data/spritesheet/start_btn.json')
 
     this.load.audio('menuMusic', './assets/audio/music/menu.mp3')
 
