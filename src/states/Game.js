@@ -54,6 +54,9 @@ export default class extends Phaser.State {
   }
 
   create () {
+
+    this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.map = game.add.tilemap('map');
     this.map.addTilesetImage('gridtiles', 'tiles');
@@ -63,7 +66,7 @@ export default class extends Phaser.State {
     // this.game.physics.enable(this.collisionLayer, Phaser.Physics.ARCADE);
 
 
-    this.game.stage.backgroundColor = "#1d981d";
+
 
     // this.map.setCollisionByExclusion([], true, this.groundLayer);
     this.map.setCollisionByExclusion([], true, this.collisionLayer);
