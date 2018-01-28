@@ -69,7 +69,7 @@ export default class extends Phaser.State {
     this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
   }
 
-  loadSprite(type, cls) {
+  loadSprite(type, cls, tile) {
     let ret
     var result = this.findObjectsByType(type, this.map, 'Objects');
     let existing = null
@@ -80,11 +80,14 @@ export default class extends Phaser.State {
       }
     }
 
-    if (!existing) {
-      ret = new cls(game, result[0].x, result[0].y, this.level_index);
-      global_items.push(ret)
+    console.log(result)
+    if (!existing && (result.length !== 0)) {
+      if (tile) {
+        ret = new cls(game, result[0].x, result[0].y, this.level_index);
+        global_items.push(ret)
+      }
     } else {
-      if (existing.level == this.level_index) {
+      if (existing && existing.level == this.level_index) {
         ret = new cls(game, existing.position.x, existing.position.y, this.level_index);
         for(var i in global_items) {
           if (global_items[i] instanceof cls) {
@@ -117,29 +120,23 @@ export default class extends Phaser.State {
     //this.map.setCollisionBetween(1, 100000, true, this.collisionLayer);
 
     // this.groundLayer.visible = true;
+    this.ice_cream = this.loadSprite('ice_cream', IceCream, false)
+    this.chest = this.loadSprite('chest', Chest, true)
 
-    if (currentInventoryItem == null ||
-      !currentInventoryItem.isIcecream()) {
-      var result = this.findObjectsByType('ice_cream', this.map, 'Objects');
-      this.ice_cream = new IceCream(game, result[0].x, result[0].y);
-    } else {
-      this.ice_cream = null;
-    }
-
-    var result = this.findObjectsByType('chest', this.map, 'Objects');
-    this.chest = new Chest(this.game, result[0].x, result[0].y);
-
-    if (this.level_index === 3) {
-      var result = this.findObjectsByType('son', this.map, 'Objects');
-      this.son = new Son(this.game, result[0].x, result[0].y);
-    } else {
-      this.son = null;
+    if(this.level_index === 3) {
+      if(! window.TheLostSon.playerInventory.isSonWithYou()) {
+        var results = this.findObjectsByType('son', this.map, 'Objects');
+        this.son = new Son(this.game, results[0].x, results[0].y)
+        this.game.physics.enable(this.son, Phaser.Physics.ARCADE);
+      } else {
+        this.son = null
+      }
     }
 
     if (!window.TheLostSon.playerInventory.keyUsed &&
       (currentInventoryItem == null ||
       !currentInventoryItem.isKey())) {
-      this.key = this.loadSprite('key', Key)
+      this.key = this.loadSprite('key', Key, true)
     }
 
     var results = this.findObjectsByType('portalN', this.map, 'Objects');
@@ -226,12 +223,16 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
     this.game.physics.arcade.overlap(this.player, this.key, this.key.collect, null, this.key);
+    if (this.ice_cream) {
+      this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
+    }
     this.game.physics.arcade.overlap(this.player, this.chest, this.chest.openChest, null, this.chest);
 
     if (this.ice_cream != null)
       this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
-    if (this.son != null)
+    if (this.son != null) {
       this.game.physics.arcade.overlap(this.player, this.son, this.son.convinceWithIcecream, null, this.son);
+    }
 
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
 
@@ -256,11 +257,16 @@ export default class extends Phaser.State {
           diffx = -10 -16 - 32;
         }
         let newitem = new cls(game, this.player.position.x + diffx, this.player.position.y - 16, this.level_index)
+        let added = false
         for(var i in global_items) {
           if (global_items[i] instanceof cls) {
             global_items[i] = newitem
+            added = true
             break
           }
+        }
+        if (! added) {
+          global_items.push(newitem)
         }
         if (droppedItem.isKey()) {
           this.key = newitem
