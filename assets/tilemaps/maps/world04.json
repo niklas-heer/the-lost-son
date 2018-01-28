@@ -28,6 +28,26 @@
          "name":"Objects",
          "objects":[
                 {
+                 "gid":85,
+                 "height":32,
+                 "id":3,
+                 "name":"",
+                 "properties":
+                    {
+                     "type":"son"
+                    },
+                 "propertytypes":
+                    {
+                     "type":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":479,
+                 "y":192
+                }, 
+                {
                  "gid":29,
                  "height":32,
                  "id":7,
