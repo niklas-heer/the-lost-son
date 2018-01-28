@@ -39,6 +39,8 @@ export default class extends Phaser.State {
     this.loaded = true;
 
     this.level_index = index;
+    this.image64;
+
   }
 
   preload () {
@@ -271,11 +273,13 @@ export default class extends Phaser.State {
   }
 
   toLevel(index, direction) {
-    this.state.start('Game' + index, true, false, index, direction);
+    this.image64 = this.game.canvas.toDataURL('image/png');
+    this.state.start('Transmit', true, false, this.image64, 'Game' + index, index, direction);
   }
 
   enterPortal(player, portal, direction) {
     var newlvl;
+
     if (direction == 0) {
       newlvl = levels[this.level_index].exits['N'];
     } else if (direction == 1) {

@@ -4,7 +4,6 @@ export default class extends Phaser.State {
     init () {
         this.introCompleted = false
     }
-
     create () {
         const text = 'In a world where teleportation\nis used to travel any distance.\n' +
         '\n' +
