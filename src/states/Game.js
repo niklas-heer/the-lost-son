@@ -362,8 +362,15 @@ export default class extends Phaser.State {
   }
 
   getFrameNumberForPlayer() {
+
+    let currentItem = window.TheLostSon.playerInventory.getInventoryItem()
+
     if (window.TheLostSon.playerInventory.isSonWithYou()) {
+      return 3;
+    } else if (currentItem !== null && currentItem.isIcecream()) {
       return 1;
+    } else if (currentItem !== null && currentItem.isKey()) {
+      return 2;
     } else {
       return 0;
     }
