@@ -8,21 +8,16 @@ export default class Key extends Phaser.Sprite {
     this.x = x
     this.y = y
     this.level = level
-    this.loadTexture('key');
     this.game.add.existing(this);
     game.physics.enable(this, Phaser.Physics.ARCADE);
   }
 
   collect(player, key) {
-    console.log("pick up")
     let currentItem = window.TheLostSon.playerInventory.getInventoryItem();
     if (currentItem == null) {
       window.TheLostSon.playerInventory.collectKey();
-      player.loadTexture('key');
       player.game.velo = 200;
       key.remove();
-    } else {
-      console.log("cant pick up")
     }
   }
 

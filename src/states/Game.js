@@ -2,9 +2,12 @@
 import Phaser from 'phaser'
 import Inventory from '../models/inventory/inventory'
 import Item from '../models/inventory/item'
+
 import Chest from '../sprites/chest'
 import IceCream from '../sprites/icecream'
 import Key from '../sprites/key'
+import Son from '../sprites/son'
+import Shelve from '../sprites/shelve'
 
 var levels
 var global_items
@@ -98,6 +101,7 @@ export default class extends Phaser.State {
 
   create () {
     this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
+    const currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem();
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.map = game.add.tilemap('map');
@@ -112,10 +116,25 @@ export default class extends Phaser.State {
     //this.map.setCollisionBetween(1, 100000, true, this.collisionLayer);
 
     // this.groundLayer.visible = true;
-    this.ice_cream = this.loadSprite('ice_cream', IceCream)
-    this.chest = this.loadSprite('chest', Chest)
 
-    let currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem();
+    if (currentInventoryItem == null ||
+      !currentInventoryItem.isIcecream()) {
+      var result = this.findObjectsByType('ice_cream', this.map, 'Objects');
+      this.ice_cream = new IceCream(game, result[0].x, result[0].y);
+    } else {
+      this.ice_cream = null;
+    }
+
+    var result = this.findObjectsByType('chest', this.map, 'Objects');
+    this.chest = new Chest(this.game, result[0].x, result[0].y);
+
+    if (this.level_index === 3) {
+      var result = this.findObjectsByType('son', this.map, 'Objects');
+      this.son = new Son(this.game, result[0].x, result[0].y);
+    } else {
+      this.son = null;
+    }
+
     if (!window.TheLostSon.playerInventory.keyUsed &&
       (currentInventoryItem == null ||
       !currentInventoryItem.isKey())) {
@@ -177,7 +196,8 @@ export default class extends Phaser.State {
       posy = portalpos.y + addy
     }
 
-    this.player = this.game.add.sprite(posx, posy, this.getTextureForPlayer());
+    this.player = this.game.add.sprite(posx, posy, 'player');
+    this.player.frame = this.getFrameNumberForPlayer();
 
     this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
     this.player.anchor.setTo(0.5, 0.5)
@@ -205,8 +225,12 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
     this.game.physics.arcade.overlap(this.player, this.key, this.key.collect, null, this.key);
-    this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
     this.game.physics.arcade.overlap(this.player, this.chest, this.chest.openChest, null, this.chest);
+
+    if (this.ice_cream != null)
+      this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
+    if (this.son != null)
+      this.game.physics.arcade.overlap(this.player, this.son, this.son.convinceWithIcecream, null, this.son);
 
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
 
@@ -214,10 +238,9 @@ export default class extends Phaser.State {
       let droppedItem = window.TheLostSon.playerInventory.dropInventoryItem();
 
       if (droppedItem !== null) {
-        this.player.loadTexture(this.getTextureForPlayer(), 0);
+        this.player.frame = this.getFrameNumberForPlayer();
 
         let cls
-        console.log(droppedItem)
         if (droppedItem.isKey()) {
           cls = Key
         } else if (droppedItem.isIcecream()) {
@@ -225,7 +248,6 @@ export default class extends Phaser.State {
         } else if (droppedItem.isBatterie()) {
           cls = Batterie
         }
-        console.log(cls)
 
         //magic
         let diffx = 16 + 10;
@@ -301,8 +323,6 @@ export default class extends Phaser.State {
 
     key.remove();
     window.TheLostSon.playerInventory.findKey();
-
-    this.player.loadTexture('star_with_key', 0);
   }
 
   toLevel(index, direction) {
@@ -334,23 +354,11 @@ export default class extends Phaser.State {
     }
   }
 
-  getTextureForPlayer() {
-    let currentItem = window.TheLostSon.playerInventory.getInventoryItem();
-    if (currentItem == null) {
-      return 'player';
-    }
-
-    switch (currentItem.name) {
-      case 'Key':
-        return 'star_with_key';
-      case 'Icecream':
-        return 'ice_cream';
-      case 'HedgeTrimmer':
-        return 'star_with_power';
-      case 'Batterie':
-        return 'player';
-      default:
-        return 'player';
+  getFrameNumberForPlayer() {
+    if (window.TheLostSon.playerInventory.isSonWithYou()) {
+      return 1;
+    } else {
+      return 0;
     }
   }
 

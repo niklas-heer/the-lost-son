@@ -2,7 +2,6 @@ import Phaser from 'phaser'
 import Inventory from '../models/inventory/inventory'
 
 export default class IceCream extends Phaser.Sprite {
-
   constructor(game, x, y, level) {
     super(game, x, y, 'ice_cream');
     this.x = x
@@ -14,15 +13,11 @@ export default class IceCream extends Phaser.Sprite {
   }
 
   collect(player, ice_cream) {
-    console.log("pick up")
     let currentItem = window.TheLostSon.playerInventory.getInventoryItem();
     if (currentItem == null) {
       window.TheLostSon.playerInventory.collectIcecream();
-      player.loadTexture('ice_cream');
       player.game.velo = 200;
       ice_cream.remove();
-    } else {
-      console.log("cant pick up")
     }
   }
 
