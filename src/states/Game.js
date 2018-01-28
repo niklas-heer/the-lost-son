@@ -123,11 +123,10 @@ export default class extends Phaser.State {
     this.ice_cream = this.loadSprite('ice_cream', IceCream, false)
     this.chest = this.loadSprite('chest', Chest, true)
 
-    if(this.level_index === 0) {
+    if(this.level_index === 5) {
       var results = this.findObjectsByType('portal', this.map, 'Objects');
       this.portal = new Portal(this.game, results[0].x, results[0].y)
       this.game.physics.enable(this.portal, Phaser.Physics.ARCADE);
-      console.log("loaded portal")
     }
 
     if(this.level_index === 3) {
