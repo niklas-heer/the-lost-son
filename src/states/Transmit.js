@@ -7,10 +7,12 @@ export default class extends Phaser.State {
     this.nextgame = nextgame;
     this.index = index;
     this.direction = direction;
+    this.duration = 1000;
   }
 
   preload () {
     this.game.load.image('screenshot', this.image64);
+    this.load.audio('papercrunch', './assets/audio/sound/Papier.wav')
   }
 
   nextlevel () {
@@ -18,19 +20,20 @@ export default class extends Phaser.State {
   }
 
   fadeout () {
-    game.add.tween(this.pic.scale).to({x: 3, y: 3}, 3000, "Linear", true, 0, 0);
-    game.add.tween(this.pic).to({alpha: 0}, 2000, "Linear", true, 0, 0);
-    this.rotate2 = game.add.tween(this.pic).to({angle: 360}, 2000, "Linear", true, 0, 0);
+    game.add.tween(this.pic.scale).to({x: 3, y: 3}, this.duration + 1000, "Linear", true, 0, 0);
+    game.add.tween(this.pic).to({alpha: 0}, this.duration, "Linear", true, 0, 0);
+    this.rotate2 = game.add.tween(this.pic).to({angle: 360}, this.duration, "Linear", true, 0, 0);
     this.rotate2.onComplete.add(this.nextlevel, this);    
   }
 
   create () {
+    this.sound = this.game.add.audio('papercrunch')
     this.pic = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'screenshot');
     this.pic.anchor.setTo(0.5, 0.5);
+    this.sound.play();
+    game.add.tween(this.pic.scale).to({x: 0.02, y: 0.02}, this.duration, "Linear", true, 0, 0);
 
-    game.add.tween(this.pic.scale).to({x: 0.02, y: 0.02}, 2000, "Linear", true, 0, 0);
-
-    this.rotate = game.add.tween(this.pic).to({angle: 360}, 2000, "Linear", true, 0, 0);
+    this.rotate = game.add.tween(this.pic).to({angle: 360}, this.duration, "Linear", true, 0, 0);
     this.rotate.onComplete.add(this.fadeout, this);    
 
   }
