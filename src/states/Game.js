@@ -80,13 +80,14 @@ export default class extends Phaser.State {
       }
     }
 
-    if (!existing) {
+    console.log(result)
+    if (!existing && (result.length !== 0)) {
       if (tile) {
         ret = new cls(game, result[0].x, result[0].y, this.level_index);
         global_items.push(ret)
       }
     } else {
-      if (existing.level == this.level_index) {
+      if (existing && existing.level == this.level_index) {
         ret = new cls(game, existing.position.x, existing.position.y, this.level_index);
         for(var i in global_items) {
           if (global_items[i] instanceof cls) {
@@ -122,11 +123,14 @@ export default class extends Phaser.State {
     this.ice_cream = this.loadSprite('ice_cream', IceCream, false)
     this.chest = this.loadSprite('chest', Chest, true)
 
-    if (this.level_index === 3) {
-      var result = this.findObjectsByType('son', this.map, 'Objects');
-      this.son = new Son(this.game, result[0].x, result[0].y);
-    } else {
-      this.son = null;
+    if(this.level_index === 3) {
+      if(! window.TheLostSon.playerInventory.isSonWithYou()) {
+        var results = this.findObjectsByType('son', this.map, 'Objects');
+        this.son = new Son(this.game, results[0].x, results[0].y)
+        this.game.physics.enable(this.son, Phaser.Physics.ARCADE);
+      } else {
+        this.son = null
+      }
     }
 
     if (!window.TheLostSon.playerInventory.keyUsed &&
@@ -226,8 +230,9 @@ export default class extends Phaser.State {
 
     if (this.ice_cream != null)
       this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
-    if (this.son != null)
+    if (this.son != null) {
       this.game.physics.arcade.overlap(this.player, this.son, this.son.convinceWithIcecream, null, this.son);
+    }
 
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
 
