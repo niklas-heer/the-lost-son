@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import Inventory from '../models/inventory/inventory'
 import Item from '../models/inventory/item'
 import Chest from '../sprites/chest'
+import IceCream from '../sprites/icecream'
 
 var levels
 
@@ -73,8 +74,7 @@ export default class extends Phaser.State {
     // this.groundLayer.visible = true;
 
     var result = this.findObjectsByType('ice_cream', this.map, 'Objects');
-    this.ice_cream = this.game.add.sprite(result[0].x, result[0].y, 'ice_cream');
-    this.game.physics.enable(this.ice_cream, Phaser.Physics.ARCADE);
+    this.ice_cream = new IceCream(game, result[0].x, result[0].y);
 
     var result = this.findObjectsByType('chest', this.map, 'Objects');
     this.chest = new Chest(this.game, result[0].x, result[0].y);
@@ -170,13 +170,13 @@ export default class extends Phaser.State {
     this.game.physics.arcade.collide(this.player, this.collisionLayer);
     // this.game.physics.arcade.collide(this.player, this.chest);
 
-    this.game.physics.arcade.overlap(this.player, this.ice_cream, this.collectIceCream, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_n, this.enterPortalN, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_e, this.enterPortalE, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
     this.game.physics.arcade.overlap(this.player, this.key, this.collectKey, null, this);
-    this.game.physics.arcade.overlap(this.player, this.chest, this.chest.openChest.bind(this.chest), null, this);
+    this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
+    this.game.physics.arcade.overlap(this.player, this.chest, this.chest.openChest, null, this.chest);
 
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
 
@@ -222,14 +222,6 @@ export default class extends Phaser.State {
     }
 
     this.rotatePlayer(this.player.body.velocity.x, this.player.body.velocity.y, this.player.body.acceleration.x, this.player.body.acceleration.y)
-  }
-
-  collectIceCream(player, ice_cream) {
-    ice_cream.destroy();
-
-    this.player.has_ice_cream = true;
-    this.player.loadTexture('star_with_power', 0);
-    this.velo = 200;
   }
 
   collectKey(player, key) {
