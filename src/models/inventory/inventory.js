@@ -15,6 +15,14 @@ export default class Inventory {
     currentItem = new Item('Icecream', [ 'GrumpySon' ])
   }
 
+  collectKey() {
+    if (this.carriesItem()) {
+      throw `Already carring item '${currentItem.name}'`
+    }
+
+    currentItem = new Item('Key', [ 'GrumpySon' ])
+  }
+
   findKey() {
     if (this.carriesItem()) {
       throw `Already carring item '${currentItem.name}'`

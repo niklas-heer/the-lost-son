@@ -4,8 +4,10 @@ import Inventory from '../models/inventory/inventory'
 import Item from '../models/inventory/item'
 import Chest from '../sprites/chest'
 import IceCream from '../sprites/icecream'
+import Key from '../sprites/key'
 
 var levels
+var global_items
 
 export default class extends Phaser.State {
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
@@ -25,6 +27,7 @@ export default class extends Phaser.State {
 
   init (index, direction) {
     levels = window.TheLostSon.levels
+    global_items = window.TheLostSon.items
     this.velo = 250;
     this.direction = direction
 
@@ -38,7 +41,6 @@ export default class extends Phaser.State {
 
     this.level_index = index;
     this.image64;
-
   }
 
   preload () {
@@ -58,9 +60,40 @@ export default class extends Phaser.State {
 
     this.game.load.spritesheet('star_with_power', './assets/images/star_with_power.png', 32, 32);
     this.game.load.spritesheet('star_with_key', './assets/images/star_with_key.png', 32, 32);
-    
+
     this.game.load.tilemap('map', levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
+  }
+
+  loadSprite(type, cls) {
+    let ret
+    var result = this.findObjectsByType(type, this.map, 'Objects');
+    let existing = null
+    for(var i in global_items) {
+      if (global_items[i] instanceof cls) {
+        existing = global_items[i]
+        break
+      }
+    }
+
+    if (!existing) {
+      ret = new cls(game, result[0].x, result[0].y, this.level_index);
+      global_items.push(ret)
+    } else {
+      if (existing.level == this.level_index) {
+        ret = new cls(game, existing.position.x, existing.position.y, this.level_index);
+        for(var i in global_items) {
+          if (global_items[i] instanceof cls) {
+            global_items[i] = ret
+            break
+          }
+        }
+      } else {
+        ret = new cls(game, -100, -100, this.level_index);
+      }
+    }
+
+    return ret
   }
 
   create () {
@@ -79,20 +112,14 @@ export default class extends Phaser.State {
     //this.map.setCollisionBetween(1, 100000, true, this.collisionLayer);
 
     // this.groundLayer.visible = true;
-
-    var result = this.findObjectsByType('ice_cream', this.map, 'Objects');
-    this.ice_cream = new IceCream(game, result[0].x, result[0].y);
-
-    var result = this.findObjectsByType('chest', this.map, 'Objects');
-    this.chest = new Chest(this.game, result[0].x, result[0].y);
+    this.ice_cream = this.loadSprite('ice_cream', IceCream)
+    this.chest = this.loadSprite('chest', Chest)
 
     let currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem();
     if (!window.TheLostSon.playerInventory.keyUsed &&
       (currentInventoryItem == null ||
       !currentInventoryItem.isKey())) {
-      var result = this.findObjectsByType('key', this.map, 'Objects');
-      this.key = this.game.add.sprite(result[0].x, result[0].y, 'key');
-      this.game.physics.enable(this.key, Phaser.Physics.ARCADE);
+      this.key = this.loadSprite('key', Key)
     }
 
     var results = this.findObjectsByType('portalN', this.map, 'Objects');
@@ -177,7 +204,7 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.portal_e, this.enterPortalE, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
-    this.game.physics.arcade.overlap(this.player, this.key, this.collectKey, null, this);
+    this.game.physics.arcade.overlap(this.player, this.key, this.key.collect, null, this.key);
     this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
     this.game.physics.arcade.overlap(this.player, this.chest, this.chest.openChest, null, this.chest);
 
@@ -189,7 +216,37 @@ export default class extends Phaser.State {
       if (droppedItem !== null) {
         this.player.loadTexture(this.getTextureForPlayer(), 0);
 
-        // ToDo: store item in level and draw at the current player position
+        let cls
+        console.log(droppedItem)
+        if (droppedItem.isKey()) {
+          cls = Key
+        } else if (droppedItem.isIcecream()) {
+          cls = IceCream
+        } else if (droppedItem.isBatterie()) {
+          cls = Batterie
+        }
+        console.log(cls)
+
+        //magic
+        let diffx = 16 + 10;
+        if (this.player.position.x < 300) {
+          diffx = -10 -16 - 32;
+        }
+        let newitem = new cls(game, this.player.position.x + diffx, this.player.position.y - 16, this.level_index)
+        for(var i in global_items) {
+          if (global_items[i] instanceof cls) {
+            global_items[i] = newitem
+            break
+          }
+        }
+        if (droppedItem.isKey()) {
+          this.key = newitem
+        } else if (droppedItem.isIcecream()) {
+          this.ice_cream = newitem
+        } else if (droppedItem.isBatterie()) {
+          this.batterie = newitem
+
+        }
       }
     }
 
@@ -242,7 +299,7 @@ export default class extends Phaser.State {
       return;
     }
 
-    key.destroy();
+    key.remove();
     window.TheLostSon.playerInventory.findKey();
 
     this.player.loadTexture('star_with_key', 0);

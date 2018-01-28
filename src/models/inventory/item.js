@@ -15,7 +15,7 @@ export default class Item {
   }
 
   isIcecream() {
-    return this.name === 'IceCream'
+    return this.name === 'Icecream'
   }
 
   isHedgeTrimmer() {
