@@ -174,26 +174,6 @@
                  "width":32,
                  "x":60,
                  "y":334
-                }, 
-                {
-                 "gid":127,
-                 "height":32,
-                 "id":14,
-                 "name":"",
-                 "properties":
-                    {
-                     "type":"portal"
-                    },
-                 "propertytypes":
-                    {
-                     "type":"string"
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":299,
-                 "y":364
                 }],
          "opacity":1,
          "type":"objectgroup",
