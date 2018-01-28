@@ -54,6 +54,7 @@ export default class extends Phaser.State {
     this.game.load.spritesheet('chest_open', './assets/images/chest_open.png', 32, 32);
 
     this.game.load.spritesheet('son', './assets/images/son.png', 32, 32);
+    this.game.load.spritesheet('stargate', './assets/images/stargate.png', 32, 32);
     this.game.load.spritesheet('ice_cream', './assets/images/ice_cream.png', 32, 32);
     this.game.load.spritesheet('key', './assets/images/key.png', 32, 32);
     this.game.load.spritesheet('scissor', './assets/images/scissor.png', 32, 32);
