@@ -54,6 +54,8 @@ export default class Menu extends Phaser.State {
 
     this.music.loopFull()
 
+    this.music.volume = 0.5
+
     this.spacebarKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
   }
   update() {

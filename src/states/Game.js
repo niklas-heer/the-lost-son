@@ -66,7 +66,7 @@ export default class extends Phaser.State {
     this.game.load.tilemap('map', levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
 
-    this.load.audio('bleistift', './assets/audio/music/game.mp3')
+    this.load.audio('game_music', './assets/audio/music/game.mp3');
   }
 
   loadSprite(type, cls, tile) {
@@ -216,8 +216,9 @@ export default class extends Phaser.State {
 
     this.player.angle = rotation;
     // this.groundLayer.resizeWorld();
-    this.backgroundsound = this.game.add.audio('bleistift')
+    this.backgroundsound = this.game.add.audio('game_music')
     this.backgroundsound.loopFull()
+    this.backgroundsound.volume = 0.2
   }
 
   update() {
