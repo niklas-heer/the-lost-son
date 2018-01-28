@@ -18,6 +18,7 @@ export default class IceCream extends Phaser.Sprite {
       window.TheLostSon.playerInventory.collectIcecream();
       player.game.velo = 200;
       ice_cream.remove();
+      player.frame = 1;
     }
   }
 

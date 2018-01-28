@@ -18,6 +18,7 @@ export default class Key extends Phaser.Sprite {
       window.TheLostSon.playerInventory.collectKey();
       player.game.velo = 200;
       key.remove();
+      player.frame = 2;
     }
   }
 
