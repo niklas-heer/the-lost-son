@@ -9,7 +9,7 @@ export default class extends Phaser.State {
     }
 
     create () {
-        const text = 'Father found his son again\n and teleported to the office.\n\n They are now reunited\n in front of a game console\n and gamble a game.';
+        const text = 'The Father found his son again\n and they teleported to the office together\n\n Now reunited\n in front of a game console\n they play a game...';
 
 
         this.game.stage.backgroundColor = 0x272822;
