@@ -7,7 +7,7 @@ export default class extends Phaser.State {
     create () {
         const text = 'In a world where teleportation\nis used to travel any distance.\n' +
         '\n' +
-        'A father wants to take his son with him to\nthe "bring your son to office" day.\n' +
+        'A father wants to take his son with him to\nthe "bring your son to office" day.\n\n' +
         'As they both teleported they got separated\nand his son was lost in the way\nto the desired destination.\n'
         '\n' +
         'Your mission is to find your\nson and go to work.';
@@ -42,7 +42,7 @@ export default class extends Phaser.State {
 
         if (this.introText && (this.introText.inCamera || this.introText.position.y > 0))
         {
-            this.introText.position.y -= 2
+            this.introText.position.y -= 1
         }
         else if (this.introText && this.introText.position.y < 0)
         {
