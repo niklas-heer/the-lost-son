@@ -1,4 +1,18 @@
-# the-lost-son
+![son](https://raw.github.com/niklas-heer/the-lost-son/master/.github/screen.png "The lost son.")
+
+
+# The lost son
+
+This game was developed at the [Global Game Jam 2018 @ Ansbach](https://globalgamejam.org/2018/jam-sites/ggj-ansbach).
+
+Team:
+- Hannes (Code)
+- Vincent (Code)
+- Jochen (Code & Artwork)
+- Tiffany (Artwork)
+- Niklas (Code & Artwork)
+
+Website: https://globalgamejam.org/2018/games/lost-son
 
 ## Intro Text
 In a world where teleportation is used to travel any distance.
