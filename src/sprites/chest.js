@@ -24,12 +24,11 @@ export default class Chest extends Phaser.Sprite {
 
   openChest(player, chest) {
     if(this.canOpenChest(player)) {
-      this.loadTexture('chest_open', 0);
+      this.frame = 1;
 
       window.TheLostSon.playerInventory.useKeyOnChest();
 
       window.TheLostSon.playerInventory.receiveHedgeTrimmer();
-      player.loadTexture('player', 0);
     }
   }
 

@@ -1,6 +1,7 @@
 import Item from './item'
 
 let currentItem = null
+let sonPowerUp = null
 
 export default class Inventory {
   constructor() {
@@ -46,6 +47,20 @@ export default class Inventory {
     }
 
     currentItem = new Item('Batterie', [ 'Portal' ])
+  }
+
+  convinceSon() {
+    if (sonPowerUp != null ||
+      currentItem == null ||
+      !currentItem.isIcecream()) {
+      throw `Icecream is needed to convice your son`
+    }
+
+    sonPowerUp = new Item('Son', [ 'Shelve' ])
+  }
+
+  isSonWithYou() {
+    return sonPowerUp != null
   }
 
   carriesItem() {

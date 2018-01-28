@@ -7,7 +7,7 @@
          "name":"Ground",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":20,
          "x":0,
          "y":0
@@ -201,7 +201,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":15,
+ "nextobjectid":16,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.0",

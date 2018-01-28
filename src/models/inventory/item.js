@@ -25,4 +25,8 @@ export default class Item {
   isBatterie() {
     return this.name === 'Batterie'
   }
+
+  isSon() {
+    return this.name === 'Son'
+  }
 }
