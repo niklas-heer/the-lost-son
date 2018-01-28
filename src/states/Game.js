@@ -69,7 +69,7 @@ export default class extends Phaser.State {
     this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
   }
 
-  loadSprite(type, cls) {
+  loadSprite(type, cls, tile) {
     let ret
     var result = this.findObjectsByType(type, this.map, 'Objects');
     let existing = null
@@ -81,8 +81,10 @@ export default class extends Phaser.State {
     }
 
     if (!existing) {
-      ret = new cls(game, result[0].x, result[0].y, this.level_index);
-      global_items.push(ret)
+      if (tile) {
+        ret = new cls(game, result[0].x, result[0].y, this.level_index);
+        global_items.push(ret)
+      }
     } else {
       if (existing.level == this.level_index) {
         ret = new cls(game, existing.position.x, existing.position.y, this.level_index);
@@ -117,6 +119,8 @@ export default class extends Phaser.State {
     //this.map.setCollisionBetween(1, 100000, true, this.collisionLayer);
 
     // this.groundLayer.visible = true;
+    this.ice_cream = this.loadSprite('ice_cream', IceCream, false)
+    this.chest = this.loadSprite('chest', Chest, true)
 
     if (currentInventoryItem == null ||
       !currentInventoryItem.isIcecream()) {
@@ -139,7 +143,7 @@ export default class extends Phaser.State {
     if (!window.TheLostSon.playerInventory.keyUsed &&
       (currentInventoryItem == null ||
       !currentInventoryItem.isKey())) {
-      this.key = this.loadSprite('key', Key)
+      this.key = this.loadSprite('key', Key, true)
     }
 
     var results = this.findObjectsByType('portalN', this.map, 'Objects');
@@ -226,6 +230,9 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
     this.game.physics.arcade.overlap(this.player, this.key, this.key.collect, null, this.key);
+    if (this.ice_cream) {
+      this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
+    }
     this.game.physics.arcade.overlap(this.player, this.chest, this.chest.openChest, null, this.chest);
 
     if (this.ice_cream != null)
