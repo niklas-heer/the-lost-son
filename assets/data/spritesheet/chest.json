@@ -1,0 +1,28 @@
+{"frames": [
+
+{
+	"filename": "chest_closed.png",
+	"frame": {"x":1,"y":1,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "chest_open.png",
+	"frame": {"x":35,"y":1,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "chest.png",
+	"format": "RGBA8888",
+	"size": {"w":68,"h":34},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:8e68adebd3b50c7c87078fa2151cd777:5d8487f58bff1d072e12ebf62a0dd9ee:d0951faa14b608797f96616a345e52d5$"
+}
+}
