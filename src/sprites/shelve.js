@@ -22,7 +22,6 @@ export default class Shelve extends Phaser.Sprite {
     if (window.TheLostSon.playerInventory.isSonWithYou() &&
       currentItem == null) {
       window.TheLostSon.playerInventory.getDownBatterie();
-      player.loadTexture('batterie');
       player.game.velo = 200;
       shelveWithBatterie.removeBatterie();
     }

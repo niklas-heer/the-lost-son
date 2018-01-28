@@ -6,6 +6,7 @@ let sonPowerUp = null
 export default class Inventory {
   constructor() {
     this.keyUsed = false
+    this.icecreamUsed = false
   }
 
   collectIcecream() {
@@ -81,6 +82,19 @@ export default class Inventory {
 
     this.keyUsed = true
     currentItem = null
+  }
+
+  eatIcecream() {
+    if (currentItem == null || !currentItem.isIcecream()) {
+      throw 'You need icecream to eat it'
+    }
+
+    this.icecreamUsed = true
+    currentItem = null
+  }
+
+  isIcecreamUsedAlready() {
+    return this.icecreamUsed
   }
 
   dropInventoryItem() {
