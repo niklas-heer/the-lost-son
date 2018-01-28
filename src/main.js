@@ -14,6 +14,8 @@ import config from './config'
 import Inventory from './models/inventory/inventory'
 
 window.TheLostSon = window.TheLostSon || {}
+window.TheLostSon.items = window.TheLostSon.items || []
+
 window.TheLostSon.playerInventory = window.TheLostSon.playerInventory || new Inventory()
 window.TheLostSon.levels = window.TheLostSon.levels || [
   {
