@@ -2,12 +2,12 @@
 import Phaser from 'phaser'
 import Inventory from '../models/inventory/inventory'
 import Item from '../models/inventory/item'
-
+import Chest from '../sprites/chest'
+import IceCream from '../sprites/icecream'
 
 var levels
 
 export default class extends Phaser.State {
-
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType (type, map, layer) {
     var result = new Array();
@@ -23,9 +23,7 @@ export default class extends Phaser.State {
     return result;
   }
 
-
   init (index, direction) {
-
     levels = window.TheLostSon.levels
     this.velo = 250;
     this.direction = direction
@@ -78,17 +76,10 @@ export default class extends Phaser.State {
     // this.groundLayer.visible = true;
 
     var result = this.findObjectsByType('ice_cream', this.map, 'Objects');
-    this.ice_cream = this.game.add.sprite(result[0].x, result[0].y, 'ice_cream');
-    this.game.physics.enable(this.ice_cream, Phaser.Physics.ARCADE);
+    this.ice_cream = new IceCream(game, result[0].x, result[0].y);
 
     var result = this.findObjectsByType('chest', this.map, 'Objects');
-    if (window.TheLostSon.playerInventory.keyUsed) {
-      this.chest = this.game.add.sprite(result[0].x, result[0].y, 'chest_open');
-    } else {
-      this.chest = this.game.add.sprite(result[0].x, result[0].y, 'chest_closed');
-    }
-    this.game.physics.enable(this.chest, Phaser.Physics.ARCADE);
-    this.chest.body.immovable = true;
+    this.chest = new Chest(this.game, result[0].x, result[0].y);
 
     let currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem();
     if (!window.TheLostSon.playerInventory.keyUsed &&
@@ -154,12 +145,7 @@ export default class extends Phaser.State {
       posy = portalpos.y + addy
     }
 
-    currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem();
-    if (currentInventoryItem != null && currentInventoryItem.isKey()) {
-      this.player = this.game.add.sprite(posx, posy, 'star_with_key');
-    } else {
-      this.player = this.game.add.sprite(posx, posy, 'player');
-    }
+    this.player = this.game.add.sprite(posx, posy, this.getTextureForPlayer());
 
     this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
     this.player.anchor.setTo(0.5, 0.5)
@@ -171,6 +157,7 @@ export default class extends Phaser.State {
     this.game.camera.follow(this.player);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.onDropCurrrentItem = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
     this.player.angle = rotation;
     // this.groundLayer.resizeWorld();
@@ -181,15 +168,25 @@ export default class extends Phaser.State {
     this.game.physics.arcade.collide(this.player, this.collisionLayer);
     // this.game.physics.arcade.collide(this.player, this.chest);
 
-    this.game.physics.arcade.overlap(this.player, this.ice_cream, this.collectIceCream, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_n, this.enterPortalN, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_e, this.enterPortalE, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
     this.game.physics.arcade.overlap(this.player, this.key, this.collectKey, null, this);
-    this.game.physics.arcade.overlap(this.player, this.chest, this.openChest, null, this);
+    this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
+    this.game.physics.arcade.overlap(this.player, this.chest, this.chest.openChest, null, this.chest);
 
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
+
+    if (this.onDropCurrrentItem.isDown) {
+      let droppedItem = window.TheLostSon.playerInventory.dropInventoryItem();
+
+      if (droppedItem !== null) {
+        this.player.loadTexture(this.getTextureForPlayer(), 0);
+
+        // ToDo: store item in level and draw at the current player position
+      }
+    }
 
     if(this.cursors.up.isDown || this.cursors.down.isDown) {
         if(this.cursors.up.isDown) {
@@ -235,32 +232,6 @@ export default class extends Phaser.State {
     this.rotatePlayer(this.player.body.velocity.x, this.player.body.velocity.y, this.player.body.acceleration.x, this.player.body.acceleration.y)
   }
 
-  shutdown() {
-  }
-
-  collectIceCream(player, ice_cream) {
-    ice_cream.destroy();
-
-    this.player.has_ice_cream = true;
-    this.player.loadTexture('star_with_power', 0);
-    this.velo = 200;
-  }
-
-  openChest(player, chest) {
-
-    let currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem()
-    if(!window.TheLostSon.playerInventory.keyUsed &&
-      currentInventoryItem != null &&
-      currentInventoryItem.isKey()) {
-      this.chest.loadTexture('chest_open', 0);
-
-      window.TheLostSon.playerInventory.useKeyOnChest();
-
-      window.TheLostSon.playerInventory.receiveHedgeTrimmer();
-      player.loadTexture('player', 0);
-    }
-  }
-
   collectKey(player, key) {
     if (window.TheLostSon.playerInventory.carriesItem()) {
       return;
@@ -298,6 +269,26 @@ export default class extends Phaser.State {
     var deg = rad * (180 / Math.PI);
     if (x !== 0 || y !== 0) {
       this.player.angle = deg;
+    }
+  }
+
+  getTextureForPlayer() {
+    let currentItem = window.TheLostSon.playerInventory.getInventoryItem();
+    if (currentItem == null) {
+      return 'player';
+    }
+
+    switch (currentItem.name) {
+      case 'Key':
+        return 'star_with_key';
+      case 'Icecream':
+        return 'ice_cream';
+      case 'HedgeTrimmer':
+        return 'star_with_power';
+      case 'Batterie':
+        return 'player';
+      default:
+        return 'player';
     }
   }
 

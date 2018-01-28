@@ -61,7 +61,7 @@ export default class Inventory {
     currentItem = null
   }
 
-  dropInventroryItem() {
+  dropInventoryItem() {
       let tempItemToDrop = currentItem
 
       currentItem = null
