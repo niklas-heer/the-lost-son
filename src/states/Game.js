@@ -231,7 +231,7 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
     this.game.physics.arcade.overlap(this.player, this.key, this.key.collect, null, this.key);
     if (this.portal) {
-      this.game.physics.arcade.overlap(this.player, this.portal, this.portal.enter, null, this.key);
+      this.game.physics.arcade.overlap(this.player, this.portal, this.portal.enter, null, this);
     }
     if (this.ice_cream) {
       this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
