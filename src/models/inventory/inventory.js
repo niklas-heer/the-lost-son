@@ -84,6 +84,14 @@ export default class Inventory {
     currentItem = null
   }
 
+  eatIcecream() {
+    if (currentItem == null || !currentItem.isIcecream()) {
+      throw 'You need icecream to eat it'
+    }
+
+    currentItem = null
+  }
+
   dropInventoryItem() {
       let tempItemToDrop = currentItem
 
