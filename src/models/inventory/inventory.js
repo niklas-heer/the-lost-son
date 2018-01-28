@@ -37,7 +37,6 @@ export default class Inventory {
       throw `Already carring item '${currentItem.name}'`
     }
 
-    console.warn('Collected \'HedgeTrimmer\' but no display so far')
     currentItem = new Item('Icecream', [ 'Hedge' ])
   }
 
