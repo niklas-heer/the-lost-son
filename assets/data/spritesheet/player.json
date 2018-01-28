@@ -1,0 +1,28 @@
+{"frames": [
+
+{
+	"filename": "player.png",
+	"frame": {"x":35,"y":1,"w":31,"h":31},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":0,"w":31,"h":31},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "player_with_son.png",
+	"frame": {"x":1,"y":1,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "player.png",
+	"format": "RGBA8888",
+	"size": {"w":67,"h":34},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e7b27f2884cabb1575f8d93feb4099c6:b7c01eee5b9638c8cf8a07e4d8ea0ed6:86d5339b780aedd87b35e2b7c0a7e11b$"
+}
+}
