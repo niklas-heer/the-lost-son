@@ -14,7 +14,7 @@ export default class Son extends Phaser.Sprite {
     if (currentItem != null &&
         currentItem.isIcecream()) {
       window.TheLostSon.playerInventory.convinceSon();
-      player.frame = 1;
+      player.frame = 3;
       player.game.velo = 200;
       son.destroy();
     }
