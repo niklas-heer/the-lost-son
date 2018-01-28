@@ -63,9 +63,6 @@ export default class extends Phaser.State {
     this.game.load.spritesheet('key', './assets/images/key.png', 32, 32);
     this.game.load.spritesheet('scissor', './assets/images/scissor.png', 32, 32);
 
-    this.game.load.spritesheet('star_with_power', './assets/images/star_with_power.png', 32, 32);
-    this.game.load.spritesheet('star_with_key', './assets/images/star_with_key.png', 32, 32);
-
     this.game.load.tilemap('map', levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
 
