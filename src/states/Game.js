@@ -263,11 +263,16 @@ export default class extends Phaser.State {
           diffx = -10 -16 - 32;
         }
         let newitem = new cls(game, this.player.position.x + diffx, this.player.position.y - 16, this.level_index)
+        let added = false
         for(var i in global_items) {
           if (global_items[i] instanceof cls) {
             global_items[i] = newitem
+            added = true
             break
           }
+        }
+        if (! added) {
+          global_items.push(newitem)
         }
         if (droppedItem.isKey()) {
           this.key = newitem
