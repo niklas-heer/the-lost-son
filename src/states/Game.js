@@ -8,6 +8,7 @@ import IceCream from '../sprites/icecream'
 import Key from '../sprites/key'
 import Son from '../sprites/son'
 import Shelve from '../sprites/shelve'
+import Portal from '../sprites/portal'
 
 var levels
 var global_items
@@ -57,7 +58,7 @@ export default class extends Phaser.State {
     this.game.load.spritesheet('chest_open', './assets/images/chest_open.png', 32, 32);
 
     this.game.load.spritesheet('son', './assets/images/son.png', 32, 32);
-    this.game.load.spritesheet('stargate', './assets/images/stargate.png', 32, 32);
+    this.game.load.spritesheet('stargate', './assets/images/stargate.png', 64, 64);
     this.game.load.spritesheet('ice_cream', './assets/images/ice_cream.png', 32, 32);
     this.game.load.spritesheet('key', './assets/images/key.png', 32, 32);
     this.game.load.spritesheet('scissor', './assets/images/scissor.png', 32, 32);
@@ -80,7 +81,6 @@ export default class extends Phaser.State {
       }
     }
 
-    console.log(result)
     if (!existing && (result.length !== 0)) {
       if (tile) {
         ret = new cls(game, result[0].x, result[0].y, this.level_index);
@@ -122,6 +122,13 @@ export default class extends Phaser.State {
     // this.groundLayer.visible = true;
     this.ice_cream = this.loadSprite('ice_cream', IceCream, false)
     this.chest = this.loadSprite('chest', Chest, true)
+
+    if(this.level_index === 0) {
+      var results = this.findObjectsByType('portal', this.map, 'Objects');
+      this.portal = new Portal(this.game, results[0].x, results[0].y)
+      this.game.physics.enable(this.portal, Phaser.Physics.ARCADE);
+      console.log("loaded portal")
+    }
 
     if(this.level_index === 3) {
       if(! window.TheLostSon.playerInventory.isSonWithYou()) {
@@ -223,6 +230,9 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.portal_s, this.enterPortalS, null, this);
     this.game.physics.arcade.overlap(this.player, this.portal_w, this.enterPortalW, null, this);
     this.game.physics.arcade.overlap(this.player, this.key, this.key.collect, null, this.key);
+    if (this.portal) {
+      this.game.physics.arcade.overlap(this.player, this.portal, this.portal.enter, null, this.key);
+    }
     if (this.ice_cream) {
       this.game.physics.arcade.overlap(this.player, this.ice_cream, this.ice_cream.collect, null, this.ice_cream);
     }
