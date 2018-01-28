@@ -16,7 +16,8 @@ export default class Son extends Phaser.Sprite {
       window.TheLostSon.playerInventory.convinceSon();
 
       window.TheLostSon.playerInventory.eatIcecream();
-      player.frame = 1;
+
+      player.frame = 3;
       player.game.velo = 200;
       son.destroy();
     }
