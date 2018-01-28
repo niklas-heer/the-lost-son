@@ -143,12 +143,7 @@ export default class extends Phaser.State {
       posy = portalpos.y + addy
     }
 
-    currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem();
-    if (currentInventoryItem != null && currentInventoryItem.isKey()) {
-      this.player = this.game.add.sprite(posx, posy, 'star_with_key');
-    } else {
-      this.player = this.game.add.sprite(posx, posy, 'player');
-    }
+    this.player = this.game.add.sprite(posx, posy, this.getTextureForPlayer());
 
     this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
     this.player.anchor.setTo(0.5, 0.5)
@@ -160,6 +155,7 @@ export default class extends Phaser.State {
     this.game.camera.follow(this.player);
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.onDropCurrrentItem = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
     this.player.angle = rotation;
     // this.groundLayer.resizeWorld();
@@ -179,6 +175,16 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.chest, this.chest.openChest, null, this.chest);
 
     this.player.body.maxVelocity.setTo(this.velo, this.velo);
+
+    if (this.onDropCurrrentItem.isDown) {
+      let droppedItem = window.TheLostSon.playerInventory.dropInventoryItem();
+
+      if (droppedItem !== null) {
+        this.player.loadTexture(this.getTextureForPlayer(), 0);
+
+        // ToDo: store item in level and draw at the current player position
+      }
+    }
 
     if(this.cursors.up.isDown || this.cursors.down.isDown) {
         if(this.cursors.up.isDown) {
@@ -259,6 +265,26 @@ export default class extends Phaser.State {
     var deg = rad * (180 / Math.PI);
     if (accX !== 0 || accY !== 0) {
       this.player.angle = deg;
+    }
+  }
+
+  getTextureForPlayer() {
+    let currentItem = window.TheLostSon.playerInventory.getInventoryItem();
+    if (currentItem == null) {
+      return 'player';
+    }
+
+    switch (currentItem.name) {
+      case 'Key':
+        return 'star_with_key';
+      case 'Icecream':
+        return 'ice_cream';
+      case 'HedgeTrimmer':
+        return 'star_with_power';
+      case 'Batterie':
+        return 'player';
+      default:
+        return 'player';
     }
   }
 
