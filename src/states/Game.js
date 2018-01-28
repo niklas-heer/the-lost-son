@@ -44,8 +44,9 @@ export default class extends Phaser.State {
   preload () {
     this.load.atlasJSONArray('chest', './assets/images/spritesheet/chest.png', './assets/data/spritesheet/chest.json')
     this.load.atlasJSONArray('shelf', './assets/images/spritesheet/shelf.png', './assets/data/spritesheet/shelf.json')
+    this.load.atlasJSONArray('player', './assets/images/spritesheet/player.png', './assets/data/spritesheet/player.json')
 
-    this.game.load.spritesheet('player', './assets/images/player.png', 32, 32);
+    // this.game.load.spritesheet('player', './assets/images/player.png', 32, 32);
     this.game.load.spritesheet('portal', './assets/images/portal.png', 32, 32);
     this.game.load.spritesheet('chest_closed', './assets/images/chest_closed.png', 32, 32);
     this.game.load.spritesheet('chest_open', './assets/images/chest_open.png', 32, 32);
