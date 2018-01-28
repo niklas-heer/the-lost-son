@@ -3,7 +3,7 @@ import Inventory from '../models/inventory/inventory'
 
 export default class Chest extends Phaser.Sprite {
   constructor(game, x, y) {
-    super(game, x, y);
+    super(game, x, y, 'chest');
     this.createNewChest(x, y);
     this.game.add.existing(this);
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -11,10 +11,10 @@ export default class Chest extends Phaser.Sprite {
 
   createNewChest(newXCoord, newYCoord) {
     if (window.TheLostSon.playerInventory.keyUsed) {
-      this.game.add.sprite(newXCoord, newYCoord, 'chest_open');
+      this.frame = 1;
       this.isOpen = true;
     } else {
-      this.game.add.sprite(newXCoord, newYCoord, 'chest_closed');
+      this.frame = 0;
       this.isOpen = false;
     }
   }
