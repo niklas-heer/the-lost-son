@@ -48,26 +48,6 @@
                  "y":195.312634899552
                 }, 
                 {
-                 "gid":57,
-                 "height":32,
-                 "id":6,
-                 "name":"",
-                 "properties":
-                    {
-                     "type":"ice_cream"
-                    },
-                 "propertytypes":
-                    {
-                     "type":"string"
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":194.858376224473,
-                 "y":153.805080524655
-                }, 
-                {
                  "gid":29,
                  "height":32,
                  "id":7,
