@@ -8,6 +8,7 @@ import IntroState from './states/Intro'
 import GameState from './states/Game'
 import MenuState from './states/Menu'
 import TransmitState from './states/Transmit'
+import FinishState from './states/Finish.js'
 
 import config from './config'
 
@@ -87,6 +88,8 @@ class Game extends Phaser.Game {
     this.state.add('Splash', SplashState, false)
     this.state.add('Menu', MenuState, false)
     this.state.add('Transmit', TransmitState, false)
+    this.state.add('Finish', FinishState, false)
+
     for (var i = 0; i < window.TheLostSon.levels.length; i++) {
       var state = this.state.add('Game' + i, GameState, false);
     }
