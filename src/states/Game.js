@@ -122,17 +122,6 @@ export default class extends Phaser.State {
     this.ice_cream = this.loadSprite('ice_cream', IceCream, false)
     this.chest = this.loadSprite('chest', Chest, true)
 
-    if (currentInventoryItem == null ||
-      !currentInventoryItem.isIcecream()) {
-      var result = this.findObjectsByType('ice_cream', this.map, 'Objects');
-      this.ice_cream = new IceCream(game, result[0].x, result[0].y);
-    } else {
-      this.ice_cream = null;
-    }
-
-    var result = this.findObjectsByType('chest', this.map, 'Objects');
-    this.chest = new Chest(this.game, result[0].x, result[0].y);
-
     if (this.level_index === 3) {
       var result = this.findObjectsByType('son', this.map, 'Objects');
       this.son = new Son(this.game, result[0].x, result[0].y);
