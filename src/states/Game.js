@@ -68,7 +68,8 @@ export default class extends Phaser.State {
 
     this.game.load.tilemap('map', levels[this.level_index].tilemap, null, Phaser.Tilemap.TILED_JSON);
     this.game.load.image('tiles', './assets/tilemaps/tiles/gridtiles.png');
-    this.load.audio('bleistift', './assets/audio/sound/bleistift.wav')
+
+    this.load.audio('bleistift', './assets/audio/music/game.mp3')
   }
 
   loadSprite(type, cls, tile) {

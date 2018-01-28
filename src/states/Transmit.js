@@ -12,7 +12,7 @@ export default class extends Phaser.State {
 
   preload () {
     this.game.load.image('screenshot', this.image64);
-    this.load.audio('papercrunch', './assets/audio/sound/Papier.wav')
+    this.load.audio('papercrunch', './assets/audio/sound/Papier.mp3')
   }
 
   nextlevel () {
