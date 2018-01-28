@@ -28,7 +28,8 @@ export default class Chest extends Phaser.Sprite {
 
       window.TheLostSon.playerInventory.useKeyOnChest();
 
-      window.TheLostSon.playerInventory.receiveHedgeTrimmer();
+      window.TheLostSon.playerInventory.receiveIceCream();
+      player.loadTexture('star_with_power', 0);
     }
   }
 
