@@ -32,13 +32,13 @@ export default class Inventory {
     currentItem = new Item('Key', [ 'Chest' ])
   }
 
-  receiveHedgeTrimmer() {
+  receiveIceCream() {
     if (this.carriesItem()) {
       throw `Already carring item '${currentItem.name}'`
     }
 
     console.warn('Collected \'HedgeTrimmer\' but no display so far')
-    currentItem = new Item('HedgeTrimmer', [ 'Hedge' ])
+    currentItem = new Item('Icecream', [ 'Hedge' ])
   }
 
   getDownBatterie() {
