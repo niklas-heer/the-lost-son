@@ -43,7 +43,6 @@ export default class extends Phaser.State {
 
         if (this.introText && this.introText.position.y > -200)
         {
-            console.log(this.introText.position.y);
             this.introText.position.y -= 2
             if (this.introText.position.y + this.introText.height + 25 < this.game.height) 
             {
