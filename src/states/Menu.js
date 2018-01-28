@@ -59,6 +59,7 @@ export default class Menu extends Phaser.State {
   update() {
     if (this.spacebarKey.isDown)
     {
+      this.music.stop()
       this.state.start('Intro')
     }
   }
