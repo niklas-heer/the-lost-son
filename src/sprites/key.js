@@ -1,24 +1,23 @@
 import Phaser from 'phaser'
-import Inventory from '../models/inventory/inventory'
 
 export default class Key extends Phaser.Sprite {
 
   constructor(game, x, y, level) {
-    super(game, x, y, 'key');
+    super(game, x, y, 'key')
     this.x = x
     this.y = y
     this.level = level
-    this.game.add.existing(this);
-    game.physics.enable(this, Phaser.Physics.ARCADE);
+    this.game.add.existing(this)
+    game.physics.enable(this, Phaser.Physics.ARCADE)
   }
 
   collect(player, key) {
-    let currentItem = window.TheLostSon.playerInventory.getInventoryItem();
+    let currentItem = window.TheLostSon.playerInventory.getInventoryItem()
     if (currentItem == null) {
-      window.TheLostSon.playerInventory.collectKey();
-      player.game.velo = 200;
-      key.remove();
-      player.frame = 2;
+      window.TheLostSon.playerInventory.collectKey()
+      player.game.velo = 200
+      key.remove()
+      player.frame = 2
     }
   }
 

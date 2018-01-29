@@ -5,7 +5,7 @@
 
 This game was developed at the [Global Game Jam 2018 @ Ansbach](https://globalgamejam.org/2018/jam-sites/ggj-ansbach).
 
-Team:
+Team: 
 - Hannes (Code)
 - Vincent (Code)
 - Jochen (Code & Artwork)
@@ -21,3 +21,10 @@ A father wants to take his son with him to the "bring your son to office" day.
 As they both teleported they got separated and his son was lost in the way to the desired destination.
 
 Your mission is to find your son and go to work.
+
+## Credits
+
+### Music
+
+- ["Adventure Meme" Kevin MacLeod](http://incompetech.com) 
+- ["Come and Find Me" Eric Skiff](http://ericskiff.com/music/)

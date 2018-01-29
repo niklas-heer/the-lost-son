@@ -1,10 +1,7 @@
 import Phaser from 'phaser'
-import TextButton from '../extensions/textbutton';
+import TextButton from '../extensions/textbutton'
 
 export default class Menu extends Phaser.State {
-
-  init () {
-  }
 
   create() {
     this.music = this.game.add.audio('menuMusic')
