@@ -24,6 +24,11 @@ Your mission is to find your son and go to work.
 
 ## Credits
 
+### Tech
+
+- https://phaser.io/
+- https://github.com/lean/phaser-es6-webpack
+
 ### Music
 
 - ["Adventure Meme" Kevin MacLeod](http://incompetech.com) 
