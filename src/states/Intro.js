@@ -13,15 +13,15 @@ export default class extends Phaser.State {
     'Your mission is to find your\nson and go to work.'
 
 
-    this.game.stage.backgroundColor = 0x272822
+    this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'background')
     this.introText = this.add.text(
       this.camera.centerX - 25,
       this.camera.height,
       text,
       {
-        font: '44px Bangers',
-        fill: '#e5e817',
-        smoothed: false,
+        font: 'bold 44px Pangolin',
+        fill: '#000000',
+        smoothed: true,
         align: 'center'
       })
 

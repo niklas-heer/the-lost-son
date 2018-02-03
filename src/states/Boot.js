@@ -3,7 +3,7 @@ import WebFont from 'webfontloader'
 
 export default class extends Phaser.State {
   init () {
-    this.stage.backgroundColor = '#EDEEC9'
+    this.stage.backgroundColor = '#ffffff'
     this.fontsReady = false
     this.fontsLoaded = this.fontsLoaded.bind(this)
   }
@@ -11,7 +11,7 @@ export default class extends Phaser.State {
   preload () {
     WebFont.load({
       google: {
-        families: ['Bangers']
+        families: ['Pangolin']
       },
       active: this.fontsLoaded
     })
@@ -19,18 +19,19 @@ export default class extends Phaser.State {
     let text = this.add.text(this.world.centerX, this.world.centerY, 'loading fonts', { font: '16px Arial', fill: '#dddddd', align: 'center' })
     text.anchor.setTo(0.5, 0.5)
 
-    this.load.atlasJSONArray('start_btn', './assets/images/spritesheet/start_btn.png', './assets/data/spritesheet/start_btn.json')
+    this.load.atlasJSONArray('start_btn', './assets/images/spritesheet/btn.png', './assets/data/spritesheet/btn.json')
 
     this.load.audio('menuMusic', './assets/audio/music/menu.mp3')
 
-    this.load.audio('menuOver', './assets/audio/sound/menu-over.mp3')
-    this.load.audio('menuOut', './assets/audio/sound/menu-out.mp3')
-    this.load.audio('menuDown', './assets/audio/sound/menu-click.mp3')
+    this.load.audio('menuOver', './assets/audio/sound/menu_over.mp3')
+    this.load.audio('menuOut', './assets/audio/sound/menu_out.mp3')
+    this.load.audio('menuDown', './assets/audio/sound/menu_click.mp3')
 
     this.load.image('loaderBg', './assets/images/loader-bg.png')
     this.load.image('loaderBar', './assets/images/loader-bar.png')
 
     this.load.image('background', './assets/images/background.png')
+    this.load.image('background_menu', './assets/images/background_menu.png')
 
     this.load.atlasJSONArray('chest', './assets/images/spritesheet/chest.png', './assets/data/spritesheet/chest.json')
     this.load.atlasJSONArray('shelf', './assets/images/spritesheet/shelf.png', './assets/data/spritesheet/shelf.json')

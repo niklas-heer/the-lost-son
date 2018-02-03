@@ -9,14 +9,15 @@ export default class extends Phaser.State {
   create () {
     const text = 'The Father found his son again\n and they teleported to the office together\n\n Now reunited\n in front of a game console\n they play a game...'
     this.game.stage.backgroundColor = 0x272822
+    this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'background')
     this.introText = this.add.text(
       this.camera.centerX - 25,
       this.camera.height,
       text,
       {
-        font: '44px Bangers',
-        fill: '#e5e817',
-        smoothed: false,
+        font: 'bold 44px Pangolin',
+        fill: '#000000',
+        smoothed: true,
         align: 'center'
       })
 
@@ -38,7 +39,7 @@ export default class extends Phaser.State {
       window.location.reload()
     }
 
-    if (this.introText && this.introText.position.y > -200) {
+    if (this.introText && this.introText.position.y > -180) {
       this.introText.position.y -= 2
       if (this.introText.position.y + this.introText.height + 25 < this.game.height) {
         this.finpic.position.y -= 2
