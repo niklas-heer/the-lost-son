@@ -85,6 +85,13 @@ export default class extends Phaser.State {
   }
 
   create () {
+    // Load the keyboard and touch cursors
+    game.touchCursor = game.plugins.add(Phaser.Plugin.TouchCursor);
+    this.cursors = game.touchCursor.createCursorKeys({
+        both: true
+    });
+
+    
     this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'background')
     const currentInventoryItem = window.TheLostSon.playerInventory.getInventoryItem()
 
@@ -268,11 +275,19 @@ export default class extends Phaser.State {
       }
     }
 
-    if(this.cursors.up.isDown || this.cursors.down.isDown) {
-        if(this.cursors.up.isDown) {
+
+    let cc = this.cursors
+
+    let up = cc.up.isDown
+    let down = cc.down.isDown
+    let left = cc.left.isDown
+    let right = cc.right.isDown
+
+    if(up || down) {
+        if(up) {
             this.player.body.acceleration.y -= this.velo
         }
-        if(this.cursors.down.isDown) {
+        if(down) {
             this.player.body.acceleration.y += this.velo
         }
     }
@@ -288,11 +303,11 @@ export default class extends Phaser.State {
         this.player.body.velocity.y = 0
       }
     }
-    if(this.cursors.left.isDown || this.cursors.right.isDown) {
-        if(this.cursors.left.isDown) {
+    if(left || right) {
+        if(left) {
             this.player.body.acceleration.x -= this.velo
         }
-        if(this.cursors.right.isDown) {
+        if(right) {
             this.player.body.acceleration.x += this.velo
         }
     }
